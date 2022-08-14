@@ -10,7 +10,7 @@ type paginator struct {
 
 // NewPaginator creates a new paginator.
 // It accepts a variadic list of options to configure the paginator.
-func NewPaginator(opts ...Option) Paginator {
+func New(opts ...Option) Paginator {
 	p := &paginator{}
 	p.buildOptions(opts...)
 	return p

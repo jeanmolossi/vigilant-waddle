@@ -7,7 +7,7 @@ import (
 )
 
 func Example() {
-	p := paginator.NewPaginator(
+	p := paginator.New(
 		paginator.WithBaseURL("https://example.com/article/%s", "article-slug"),
 		paginator.WithPage(2),
 		paginator.WithItemsPerPage(15),

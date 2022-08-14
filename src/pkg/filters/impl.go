@@ -10,8 +10,8 @@ type filters struct {
 	conditionMap map[string]interface{}
 }
 
-// NewFilterConditions will return FilterCondition instance.
-func NewFilterConditions() FilterConditions {
+// NewConditions will return FilterCondition instance.
+func NewConditions() FilterConditions {
 	return &filters{
 		fields:       make([]string, 0),
 		conditionMap: make(map[string]interface{}),

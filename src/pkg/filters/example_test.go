@@ -7,7 +7,7 @@ import (
 )
 
 func Example() {
-	f := filters.NewFilterConditions()
+	f := filters.NewConditions()
 	f.AddFields([]string{"course_published", "course_name"})
 	f.WithCondition("course_published", true)
 	f.WithCondition("course_name", "Effective Eureka")
