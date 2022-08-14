@@ -1,7 +1,19 @@
 package student
 
-import "github.com/jeanmolossi/vigilant-waddle/src/pkg/filters"
+import (
+	"context"
 
+	"github.com/jeanmolossi/vigilant-waddle/src/pkg/filters"
+	"github.com/jeanmolossi/vigilant-waddle/src/pkg/paginator"
+)
+
+// GetStudentsRepository is the repository implementation for Get Students.
 type GetStudentsRepository interface {
-	Run(filters filters.FilterConditions) ([]Student, error)
+	// Run executes the Get Students query.
+	//
+	// Example:
+	//
+	//      students, err := repo.Run(context.Backround(), filters.New(), paginator.NewConditions())
+	//
+	Run(ctx context.Context, f filters.FilterConditions, p paginator.Paginator) ([]Student, error)
 }
