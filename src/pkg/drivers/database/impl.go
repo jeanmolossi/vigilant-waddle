@@ -106,6 +106,8 @@ func (db *database) connect() (*gorm.DB, error) {
 
 	// set up the database connection.
 	db.db = dbConnection
+	// remove that line if you don't want to create extensions
+	db.db.Raw(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`)
 
 	// auto migrate the entities.
 	db.autoMigrate()
