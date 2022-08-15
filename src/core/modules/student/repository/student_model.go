@@ -15,6 +15,15 @@ type StudentModel struct {
 	UpdatedAt time.Time `gorm:"column:usr_updated_at;type:timestamp with time zone;default:now()"`
 }
 
+// TableName overrides the table name used by StudentModel to `users`
+//
+// Read more about GORM conventions:
+//
+// https://gorm.io/docs/conventions.html#TableName
+func (StudentModel) TableName() string {
+	return "users"
+}
+
 // BeforeCreate is a hook to set the created_at, updated_at fields and generate
 // uuid random.
 //

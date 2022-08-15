@@ -1,0 +1,21 @@
+#!/bin/bash
+
+HAS_MOCKERY=$(mockery --version)
+
+if [[ $HAS_MOCKERY == "" ]]; then
+  echo "Installing mockery..."
+
+  KERNEL=$(uname -m)
+  OS=$(uname -s)
+
+  REPO_LINK="https://github.com/vektra/mockery/releases/download/v2.9.4/"
+  MOCKERY="mockery_2.9.4_${OS}_${KERNEL}.tar.gz"
+
+  wget "${REPO_LINK}${MOCKERY}"
+
+  mkdir -p "${HOME}/.local/bin"
+  tar -xf "${MOCKERY}" -C "${HOME}/.local/bin" "mockery"
+  sudo echo "export \$PATH=\$PATH:\$HOME/.local/bin" >> "${HOME}/.bashrc"
+
+  rm "${MOCKERY}"
+fi

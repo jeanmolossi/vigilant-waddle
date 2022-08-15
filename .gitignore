@@ -1,0 +1,12 @@
+# Environment
+.env.*local
+
+# Tests
+
+# Misc
+.docker/dbdata/
+.vscode/
+.idea/
+
+# Keep
+!.gitkeep

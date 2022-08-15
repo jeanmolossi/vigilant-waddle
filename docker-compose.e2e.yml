@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+    vigilant_waddle_e2e_api_client:
+        container_name: vigilant_waddle_e2e_api_client
+        build: .
+        volumes:
+            - .:/src/go
+        command: sh -c ".docker/dockerize/dockerize -wait tcp://vigilant_waddle_e2e_api_db:5432 go run ."
+        env_file:
+            - .env.test.local
+        networks:
+            - e2e-net
+        depends_on:
+            - vigilant_waddle_e2e_api_db
+
+    vigilant_waddle_e2e_api_db:
+        container_name: vigilant_waddle_e2e_api_db
+        build: .docker/db
+        environment:
+            - POSTGRES_PASSWORD=postgres
+            - POSTGRES_USER=postgres
+            - POSTGRES_DB=users
+        networks:
+            - e2e-net
+
+    vigilant_waddle_e2e_api_test_runner:
+        container_name: vigilant_waddle_e2e_api_test_runner
+        build:
+            context: .
+            dockerfile: Dockerfile.e2e
+        volumes:
+            - .:/src/go
+        command: sh -c ".docker/dockerize/dockerize -wait tcp://vigilant_waddle_e2e_api_db:5432 godog run ./features/."
+        env_file:
+            - .env.test.local
+        depends_on:
+            - vigilant_waddle_e2e_api_client
+            - vigilant_waddle_e2e_api_db
+        networks:
+            - e2e-net
+networks:
+    e2e-net:
+        driver: bridge

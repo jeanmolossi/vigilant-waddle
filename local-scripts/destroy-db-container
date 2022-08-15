@@ -1,0 +1,29 @@
+#!/bin/bash
+# That script destroys the database container.
+# It helps to clean up the environment, and to avoid
+# running db container problems.
+
+# When you need restart your database container,
+# you can use the following command:
+#	make rebuild_db
+
+DOCKER_CONTAINER_NAME="vigilant_waddle_api_db"
+
+DB_CONTAINER_ID=$(docker ps -f "name=${DOCKER_CONTAINER_NAME}" -qa)
+DB_CONTAINER_IMAGE=$(docker inspect -f '{{.Config.Image}}' ${DB_CONTAINER_ID})
+
+if [ -z "${DB_CONTAINER_ID}" ]; then
+	echo "DB container not found"
+	exit 1
+fi
+
+echo "Destroying DB container..."
+if [[ -e ".docker/dbdata" ]]; then
+	sudo rm -rf .docker/dbdata
+fi
+
+docker rm -f ${DB_CONTAINER_ID}
+docker rmi ${DB_CONTAINER_IMAGE}
+
+echo "Destroy DB container done..."
+exit 0

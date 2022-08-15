@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+    vigilant_waddle_api_client:
+        container_name: vigilant_waddle_api_client
+        build: .
+        ports:
+            - "8081:8080"
+        volumes:
+            - .:/src/go
+        env_file:
+            - .env.development.local
+        command:
+            - sh
+            - -c
+            - |
+                reflex -r '\.go$$' -s -- sh -c "go run ."
+        networks:
+            - vigilant_waddle_api-net
+
+    vigilant_waddle_api_db:
+        container_name: vigilant_waddle_api_db
+        build: .docker/db
+        ports:
+            - "5432:5432"
+        volumes:
+            - .docker/dbdata:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_PASSWORD=postgres
+            - POSTGRES_USER=postgres
+            - POSTGRES_DB=users
+        networks:
+            - vigilant_waddle_api-net
+
+    vigilant_waddle_api_docs:
+        container_name: vigilant_waddle_api_docs
+        build: .
+        ports:
+            - "6060:6060"
+        volumes:
+          - .:/src/go
+        command:
+            - sh
+            - -c
+            - |
+                reflex -r '\.go$$' -s -- sh -c "godoc -http=:6060"
+
+networks:
+    vigilant_waddle_api-net:
+        driver: bridge
