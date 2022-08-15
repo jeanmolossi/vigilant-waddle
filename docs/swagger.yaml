@@ -1,4 +1,50 @@
+definitions:
+  httputil.PingInternalServerErr:
+    properties:
+      message:
+        example: unexpected error
+        type: string
+    type: object
+  httputil.PingOk:
+    properties:
+      message:
+        example: pong
+        type: string
+    type: object
 info:
   contact: {}
-paths: {}
+  termsOfService: github.com/jeanmolossi/vigilant-waddle/terms/
+paths:
+  /ping:
+    get:
+      consumes:
+      - application/json
+      description: A simple health check.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/httputil.PingOk'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/httputil.PingInternalServerErr'
+        "502":
+          description: Bad Gateway
+          schema:
+            $ref: '#/definitions/httputil.PingInternalServerErr'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/httputil.PingInternalServerErr'
+      summary: Ping the server.
+      tags:
+      - healthcheck
+securityDefinitions:
+  access_token:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

@@ -36,7 +36,7 @@ services:
         container_name: vigilant_waddle_api_docs
         build: .
         ports:
-            - "6060:6060"
+            - "6061:6060"
         volumes:
           - .:/src/go
         command:
