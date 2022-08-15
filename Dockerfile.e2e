@@ -1,0 +1,16 @@
+FROM golang:1.18.4-alpine3.16
+
+RUN apk add --no-cache git
+
+WORKDIR /src/go
+
+COPY . .
+
+ENV CGO_ENABLED=0
+
+RUN go install github.com/cucumber/godog/cmd/godog@latest
+
+RUN go mod tidy
+RUN go build -o vigillant-waddle
+
+CMD [ "godog", "run", "./features/." ]
