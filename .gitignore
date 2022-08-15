@@ -2,6 +2,7 @@
 .env.*local
 
 # Tests
+src/tests/*
 
 # Misc
 .docker/dbdata/

@@ -20,10 +20,10 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 		Token:   "",
 	}
 
-	err := api.DoRegister()
-	if err != nil {
-		panic(err)
-	}
+	// err := api.DoRegister()
+	// if err != nil {
+	// 	panic(err)
+	// }
 
 	// if has no token should login
 	if api.Token == "" {
@@ -38,7 +38,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	})
 
 	ctx.After(func(ctx context.Context, sc *godog.Scenario, err error) (context.Context, error) {
-		api.ClearDB(sc)
+		// api.ClearDB(sc)
 		return ctx, nil
 	})
 

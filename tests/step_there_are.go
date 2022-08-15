@@ -22,7 +22,7 @@ func (a *ApiFeature) ThereAreAny(tableName string, data *godog.Table) error {
 
 	dbConn := database.NewDatabase(
 		database.Hostname(os.Getenv("DB_HOST")),
-		database.Port(5432),
+		database.Port(os.Getenv("DB_PORT")),
 		database.User(os.Getenv("DB_USER")),
 		database.Password(os.Getenv("DB_PASS")),
 		database.DatabaseName(os.Getenv("DB_NAME")),
@@ -56,10 +56,10 @@ func (a *ApiFeature) ThereAreAny(tableName string, data *godog.Table) error {
 func (a *ApiFeature) ClearDB(*godog.Scenario) error {
 	dbConn := database.NewDatabase(
 		database.Hostname("vigilant_waddle_e2e_api_db"),
-		database.Port(5432),
-		database.User(os.Getenv("POSTGRES_USER")),
-		database.Password(os.Getenv("POSTGRES_PASSWORD")),
-		database.DatabaseName(os.Getenv("POSTGRES_DB")),
+		database.Port(os.Getenv("DB_PORT")),
+		database.User(os.Getenv("DB_USER")),
+		database.Password(os.Getenv("DB_PASSWORD")),
+		database.DatabaseName(os.Getenv("DB_NAME")),
 	)
 	err := dbConn.OpenConnection()
 	if err != nil {

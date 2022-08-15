@@ -1,8 +1,6 @@
 package database
 
 import (
-	"fmt"
-
 	"gorm.io/gorm"
 )
 
@@ -19,10 +17,10 @@ func Hostname(hostname string) DbOption {
 }
 
 // Port will set option port for database connection
-func Port(port int) DbOption {
+func Port(port string) DbOption {
 	return func(d Database) error {
 		if db, ok := d.(*database); ok {
-			db.port = fmt.Sprintf("%d", port)
+			db.port = port
 			return nil
 		}
 
