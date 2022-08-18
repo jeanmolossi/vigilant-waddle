@@ -42,6 +42,30 @@ paths:
       summary: Ping the server.
       tags:
       - healthcheck
+  /student:
+    post:
+      description: Register a student
+      operationId: register-student
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema: {}
+      summary: Register a student
+  /students:
+    get:
+      description: Get all students
+      operationId: get-students
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items: {}
+            type: array
+      summary: Get all students
 securityDefinitions:
   access_token:
     in: header

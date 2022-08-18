@@ -12,6 +12,8 @@ type BaseUser interface {
 	GetID() string
 	// GetEmail will return the current user email
 	GetEmail() string
+	// GetPassword will return the current user password
+	GetPassword() string
 
 	// SyncData receives an array of options and applies them to the current user
 	SyncData(usrOption ...Option) error

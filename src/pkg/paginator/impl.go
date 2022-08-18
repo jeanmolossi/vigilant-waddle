@@ -11,8 +11,15 @@ type paginator struct {
 // NewPaginator creates a new paginator.
 // It accepts a variadic list of options to configure the paginator.
 func New(opts ...Option) Paginator {
-	p := &paginator{}
-	p.buildOptions(opts...)
+	p := &paginator{
+		page:         1,
+		itemsPerPage: 10,
+	}
+
+	if len(opts) > 0 {
+		p.buildOptions(opts...)
+	}
+
 	return p
 }
 

@@ -64,7 +64,11 @@ func NewDatabase(dbOptions ...DbOption) Database {
 // The package database implementations makes a singleton to the connection.
 func (db *database) OpenConnection() (err error) {
 	db.once.Do(func() {
+		// set up the database connection.
 		db.db, err = db.connect()
+		if err == nil {
+			err = db.autoMigrate()
+		}
 	})
 
 	return
@@ -72,6 +76,10 @@ func (db *database) OpenConnection() (err error) {
 
 // DB returns the gorm.DB instance.
 func (db *database) DB() *gorm.DB {
+	if err := db.OpenConnection(); err != nil {
+		panic(err.Error())
+	}
+
 	return db.db
 }
 
@@ -104,15 +112,7 @@ func (db *database) connect() (*gorm.DB, error) {
 		return nil, err
 	}
 
-	// set up the database connection.
-	db.db = dbConnection
-	// remove that line if you don't want to create extensions
-	db.db.Raw(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`)
-
-	// auto migrate the entities.
-	db.autoMigrate()
-
-	return nil, nil
+	return dbConnection, nil
 }
 
 // dsn returns the database connection string.
@@ -132,6 +132,9 @@ func (db *database) autoMigrate() error {
 	if len(db.autoMigrateEntities) == 0 {
 		return nil
 	}
+
+	// remove that line if you don't want to create extensions
+	db.db.Exec(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`)
 
 	if err := db.db.AutoMigrate(db.autoMigrateEntities...); err != nil {
 		return err

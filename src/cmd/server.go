@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/jeanmolossi/vigilant-waddle/src/cmd/httputil"
+	"github.com/jeanmolossi/vigilant-waddle/src/core/modules/student/handler"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -13,6 +14,7 @@ import (
 
 func RunServer() {
 	e := echo.New()
+	e.HideBanner = true
 
 	// Middlewares
 	e.Use(Cors())
@@ -21,6 +23,9 @@ func RunServer() {
 	// Routes
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 	e.GET("/ping", Ping)
+
+	e.GET("/students", handler.GetStudents())
+	e.POST("/student", handler.RegisterStudent())
 
 	// Start server
 	e.Logger.Fatal(e.Start(":8080"))

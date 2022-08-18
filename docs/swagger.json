@@ -45,6 +45,41 @@
                     }
                 }
             }
+        },
+        "/student": {
+            "post": {
+                "description": "Register a student",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Register a student",
+                "operationId": "register-student",
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {}
+                    }
+                }
+            }
+        },
+        "/students": {
+            "get": {
+                "description": "Get all students",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get all students",
+                "operationId": "get-students",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {}
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {

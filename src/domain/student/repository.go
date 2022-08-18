@@ -17,3 +17,7 @@ type GetStudentsRepository interface {
 	//
 	Run(ctx context.Context, f filters.FilterConditions, p paginator.Paginator) ([]Student, error)
 }
+
+type RegisterStudentRepository interface {
+	Run(ctx context.Context, s Student) error
+}

@@ -30,6 +30,9 @@ func (s *student) GetID() string { return s.id }
 // GetEmail will return the current user email
 func (s *student) GetEmail() string { return s.email }
 
+// GetPassword will return the current user password
+func (s *student) GetPassword() string { return s.password }
+
 // SyncData receives an array of options and applies them to the current user
 func (s *student) SyncData(usrOptions ...baseuser.Option) error {
 	if len(usrOptions) == 0 {

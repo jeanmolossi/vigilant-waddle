@@ -7,3 +7,7 @@ import baseuser "github.com/jeanmolossi/vigilant-waddle/src/domain/base_user"
 type Student interface {
 	baseuser.BaseUser
 }
+
+type GetStudents func() ([]Student, error)
+
+type RegisterStudent func(Student) error
