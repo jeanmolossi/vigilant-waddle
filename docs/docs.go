@@ -66,6 +66,17 @@ const docTemplate = `{
                 ],
                 "summary": "Register a student",
                 "operationId": "register-student",
+                "parameters": [
+                    {
+                        "description": "Student",
+                        "name": "student",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/adapter.RegisterStudent"
+                        }
+                    }
+                ],
                 "responses": {
                     "201": {
                         "description": "Created",
@@ -95,6 +106,23 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "adapter.RegisterStudent": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "john@doe.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "123456"
+                }
+            }
+        },
         "httputil.PingInternalServerErr": {
             "type": "object",
             "properties": {

@@ -9,7 +9,7 @@ import (
 // StudentModel represents how a student is stored in the database.
 type StudentModel struct {
 	ID        string    `gorm:"primary_key;column:usr_id;type:uuid;default:uuid_generate_v4();index:idx_usr_id"`
-	Email     string    `gorm:"column:usr_email;type:varchar(255);index:idx_usr_email"`
+	Email     string    `gorm:"column:usr_email;unique;type:varchar(255);"`
 	Password  string    `gorm:"column:usr_password;type:varchar(255)"`
 	CreatedAt time.Time `gorm:"column:usr_created_at;type:timestamp with time zone;default:now()"`
 	UpdatedAt time.Time `gorm:"column:usr_updated_at;type:timestamp with time zone;default:now()"`

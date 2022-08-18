@@ -1,4 +1,16 @@
 definitions:
+  adapter.RegisterStudent:
+    properties:
+      email:
+        example: john@doe.com
+        type: string
+      password:
+        example: "123456"
+        type: string
+    required:
+    - email
+    - password
+    type: object
   httputil.PingInternalServerErr:
     properties:
       message:
@@ -46,6 +58,13 @@ paths:
     post:
       description: Register a student
       operationId: register-student
+      parameters:
+      - description: Student
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/adapter.RegisterStudent'
       produces:
       - application/json
       responses:

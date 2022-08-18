@@ -5,6 +5,7 @@ import (
 
 	"github.com/jeanmolossi/vigilant-waddle/src/cmd/httputil"
 	"github.com/jeanmolossi/vigilant-waddle/src/core/modules/student/handler"
+	"github.com/jeanmolossi/vigilant-waddle/src/pkg/validator"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -15,6 +16,7 @@ import (
 func RunServer() {
 	e := echo.New()
 	e.HideBanner = true
+	e.Validator = validator.NewCustomValidator()
 
 	// Middlewares
 	e.Use(Cors())

@@ -2,6 +2,7 @@ package student
 
 import (
 	baseuser "github.com/jeanmolossi/vigilant-waddle/src/domain/base_user"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // student implements Student interface wich contains the BaseUser interface
@@ -50,9 +51,19 @@ func (s *student) SyncData(usrOptions ...baseuser.Option) error {
 
 // IsPasswordValid will check if the user password received
 // is valid password for the current user
-func (s *student) IsPasswordValid(password string) bool { panic("not implemented") }
+func (s *student) IsPasswordValid(password string) bool {
+	return bcrypt.CompareHashAndPassword([]byte(s.password), []byte(password)) == nil
+}
 
 // HashPassword will hash the password received and return the hash
 //
 // It should have a password, else it will return an error
-func (s *student) HashPassword() error { panic("not implemented") }
+func (s *student) HashPassword() error {
+	hash, err := bcrypt.GenerateFromPassword([]byte(s.password), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+
+	s.password = string(hash)
+	return nil
+}
