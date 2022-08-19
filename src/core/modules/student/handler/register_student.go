@@ -7,6 +7,8 @@ import (
 	"github.com/jeanmolossi/vigilant-waddle/src/core/modules/student/factory"
 	"github.com/jeanmolossi/vigilant-waddle/src/domain/student"
 	"github.com/jeanmolossi/vigilant-waddle/src/infra/database"
+	"github.com/jeanmolossi/vigilant-waddle/src/infra/http_error"
+
 	"github.com/labstack/echo/v4"
 )
 
@@ -18,6 +20,9 @@ import (
 // @Produce json
 // @Param student body adapter.RegisterStudent true "Student"
 // @Success 201 {object} student.Student
+// @Failure 400 {object} http_error.HTTPBadRequestError
+// @Failure 409 {object} http_error.HTTPError
+// @Failure 500 {object} http_error.HTTPError
 // @Router /student [post]
 func RegisterStudent() echo.HandlerFunc {
 	db := database.GetConnection()
@@ -27,11 +32,11 @@ func RegisterStudent() echo.HandlerFunc {
 		studentInput := new(adapter.RegisterStudent)
 
 		if err := c.Bind(studentInput); err != nil {
-			return c.JSON(http.StatusBadRequest, err)
+			return http_error.Handle(c, err)
 		}
 
 		if err := c.Validate(studentInput); err != nil {
-			return c.JSON(http.StatusBadRequest, err)
+			return http_error.Handle(c, err)
 		}
 
 		s := student.NewStudent(
@@ -42,7 +47,7 @@ func RegisterStudent() echo.HandlerFunc {
 		err := usecase(s)
 
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, err)
+			return http_error.Handle(c, err)
 		}
 
 		return c.JSON(http.StatusCreated, s)
