@@ -13,8 +13,10 @@ import (
 // @Summary Get all students
 // @Description Get all students
 // @ID get-students
+// @Tags student
 // @Produce json
 // @Success 200 {object} []student.Student
+// @Security access_token
 // @Router /students [get]
 func GetStudents() echo.HandlerFunc {
 	db := database.GetConnection()

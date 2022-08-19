@@ -6,6 +6,8 @@ import (
 	"gorm.io/gorm"
 )
 
+var studentsTable = StudentModel{}.TableName()
+
 // StudentModel represents how a student is stored in the database.
 type StudentModel struct {
 	ID        string    `gorm:"primary_key;column:usr_id;type:uuid;default:uuid_generate_v4();index:idx_usr_id"`

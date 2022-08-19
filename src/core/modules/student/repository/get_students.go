@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"log"
 
 	"github.com/jeanmolossi/vigilant-waddle/src/domain/student"
 	"github.com/jeanmolossi/vigilant-waddle/src/pkg/drivers/database"
@@ -21,9 +20,23 @@ func NewGetStudents(db database.Database) student.GetStudentsRepository {
 func (g *getStudents) Run(ctx context.Context, f filters.FilterConditions, p paginator.Paginator) ([]student.Student, error) {
 	var dbStudents []StudentModel
 
-	log.Println("DB", g.db.DB())
+	result := g.db.DB()
 
-	result := g.db.DB().Find(&dbStudents)
+	fields, hasFields := f.WithFields(studentsTable)
+	if hasFields {
+		result = result.Select(fields)
+	}
+
+	if f.HasConditions() {
+		statement, values := f.Conditions()
+		result = result.Where(statement, values...)
+	}
+
+	if p.ShouldPaginate() {
+		result = result.Scopes(p.Paginate)
+	}
+
+	result = result.Find(&dbStudents)
 
 	if result.Error != nil {
 		return nil, result.Error

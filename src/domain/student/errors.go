@@ -6,3 +6,7 @@ var ErrInvalidStudentProp = errors.New("invalid student property")
 var ErrNoDataToSync = errors.New("no data to sync")
 var ErrEmptyPropertyValue = errors.New("empty property value")
 var ErrEmailAlreadyExists = errors.New("email already exists")
+
+// GetMeOptions validations
+var ErrMissingStudentID = errors.New("missing student id")
+var ErrStudentIDInvalid = errors.New("student id invalid")

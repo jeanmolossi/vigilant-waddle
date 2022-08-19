@@ -17,6 +17,7 @@ import (
 // @Summary Register a student
 // @Description Register a student
 // @ID register-student
+// @Tags student
 // @Produce json
 // @Param student body adapter.RegisterStudent true "Student"
 // @Success 201 {object} HttpNewStudent

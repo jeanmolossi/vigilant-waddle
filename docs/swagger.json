@@ -5,6 +5,67 @@
         "contact": {}
     },
     "paths": {
+        "/me": {
+            "get": {
+                "security": [
+                    {
+                        "access_token": []
+                    }
+                ],
+                "description": "Get current student",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "student"
+                ],
+                "summary": "Get current student",
+                "operationId": "get-me",
+                "parameters": [
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "fields to return from the student",
+                        "name": "fields",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/handler.HttpNewStudent"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/http_error.HTTPBadRequestError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/http_error.HTTPError"
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "schema": {
+                            "$ref": "#/definitions/http_error.HTTPError"
+                        }
+                    },
+                    "500": {
+                        "description": "An error occurred",
+                        "schema": {
+                            "$ref": "#/definitions/http_error.HTTPError"
+                        }
+                    }
+                }
+            }
+        },
         "/ping": {
             "get": {
                 "description": "A simple health check.",
@@ -52,6 +113,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "student"
+                ],
                 "summary": "Register a student",
                 "operationId": "register-student",
                 "parameters": [
@@ -95,9 +159,17 @@
         },
         "/students": {
             "get": {
+                "security": [
+                    {
+                        "access_token": []
+                    }
+                ],
                 "description": "Get all students",
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "student"
                 ],
                 "summary": "Get all students",
                 "operationId": "get-students",

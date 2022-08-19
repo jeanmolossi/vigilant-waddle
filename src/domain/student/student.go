@@ -23,6 +23,15 @@ type GetMe func(GetMeOptions) (Student, error)
 
 // GetMeOptions is the options for the GetMe usecase
 type GetMeOptions struct {
-	StudentID string   `json:"student_id" example:"1"`
+	StudentID string   `json:"student_id" example:"1" format:"uuid" validate:"required,uuid"`
 	Fields    []string `query:"fields" example:"name,email"`
+}
+
+// GetErrorMap implements ModuleErrorMap to GetMeOptions
+func (g *GetMeOptions) GetErrorMap() map[string]map[string]error {
+	return map[string]map[string]error{
+		"studentid": {
+			"required": ErrMissingStudentID,
+			"uuid":     ErrStudentIDInvalid},
+	}
 }

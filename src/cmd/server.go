@@ -28,6 +28,7 @@ func RunServer() {
 
 	e.GET("/students", handler.GetStudents())
 	e.POST("/student", handler.RegisterStudent())
+	e.GET("/me", handler.GetMe())
 
 	// Start server
 	e.Logger.Fatal(e.Start(":8080"))

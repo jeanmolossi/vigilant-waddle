@@ -70,6 +70,45 @@ info:
   contact: {}
   termsOfService: github.com/jeanmolossi/vigilant-waddle/terms/
 paths:
+  /me:
+    get:
+      description: Get current student
+      operationId: get-me
+      parameters:
+      - description: fields to return from the student
+        in: query
+        items:
+          type: string
+        name: fields
+        type: array
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/handler.HttpNewStudent'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/http_error.HTTPBadRequestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/http_error.HTTPError'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/http_error.HTTPError'
+        "500":
+          description: An error occurred
+          schema:
+            $ref: '#/definitions/http_error.HTTPError'
+      security:
+      - access_token: []
+      summary: Get current student
+      tags:
+      - student
   /ping:
     get:
       consumes:
@@ -128,6 +167,8 @@ paths:
           schema:
             $ref: '#/definitions/http_error.HTTPError'
       summary: Register a student
+      tags:
+      - student
   /students:
     get:
       description: Get all students
@@ -140,7 +181,11 @@ paths:
           schema:
             items: {}
             type: array
+      security:
+      - access_token: []
       summary: Get all students
+      tags:
+      - student
 securityDefinitions:
   access_token:
     in: header
