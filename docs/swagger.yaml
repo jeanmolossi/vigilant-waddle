@@ -6,10 +6,28 @@ definitions:
         type: string
       password:
         example: "123456"
+        maxLength: 64
+        minLength: 6
         type: string
     required:
     - email
     - password
+    type: object
+  http_error.HTTPBadRequestError:
+    properties:
+      error:
+        example: error message
+        type: string
+      errors:
+        items:
+          $ref: '#/definitions/validator.FieldError'
+        type: array
+    type: object
+  http_error.HTTPError:
+    properties:
+      error:
+        example: error message
+        type: string
     type: object
   httputil.PingInternalServerErr:
     properties:
@@ -21,6 +39,15 @@ definitions:
     properties:
       message:
         example: pong
+        type: string
+    type: object
+  validator.FieldError:
+    properties:
+      field:
+        example: field_name
+        type: string
+      message:
+        example: field_name is required
         type: string
     type: object
 info:
@@ -71,6 +98,18 @@ paths:
         "201":
           description: Created
           schema: {}
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/http_error.HTTPBadRequestError'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/http_error.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/http_error.HTTPError'
       summary: Register a student
   /students:
     get:

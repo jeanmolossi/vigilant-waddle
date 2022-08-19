@@ -81,6 +81,24 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {}
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/http_error.HTTPBadRequestError"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/http_error.HTTPError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/http_error.HTTPError"
+                        }
                     }
                 }
             }
@@ -119,7 +137,33 @@ const docTemplate = `{
                 },
                 "password": {
                     "type": "string",
+                    "maxLength": 64,
+                    "minLength": 6,
                     "example": "123456"
+                }
+            }
+        },
+        "http_error.HTTPBadRequestError": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "error message"
+                },
+                "errors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/validator.FieldError"
+                    }
+                }
+            }
+        },
+        "http_error.HTTPError": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string",
+                    "example": "error message"
                 }
             }
         },
@@ -138,6 +182,19 @@ const docTemplate = `{
                 "message": {
                     "type": "string",
                     "example": "pong"
+                }
+            }
+        },
+        "validator.FieldError": {
+            "type": "object",
+            "properties": {
+                "field": {
+                    "type": "string",
+                    "example": "field_name"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "field_name is required"
                 }
             }
         }
