@@ -68,22 +68,24 @@
                 "responses": {
                     "201": {
                         "description": "Created",
-                        "schema": {}
+                        "schema": {
+                            "$ref": "#/definitions/handler.HttpNewStudent"
+                        }
                     },
                     "400": {
-                        "description": "Bad Request",
+                        "description": "Bad request",
                         "schema": {
                             "$ref": "#/definitions/http_error.HTTPBadRequestError"
                         }
                     },
                     "409": {
-                        "description": "Conflict",
+                        "description": "User with that email already exists",
                         "schema": {
                             "$ref": "#/definitions/http_error.HTTPError"
                         }
                     },
                     "500": {
-                        "description": "Internal Server Error",
+                        "description": "An error occurred",
                         "schema": {
                             "$ref": "#/definitions/http_error.HTTPError"
                         }
@@ -128,6 +130,29 @@
                     "maxLength": 64,
                     "minLength": 6,
                     "example": "123456"
+                }
+            }
+        },
+        "handler.HttpNewStudent": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/handler.HttpStudent"
+                }
+            }
+        },
+        "handler.HttpStudent": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "john@doe.com"
+                },
+                "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "example": "550e8400-e29b-41d4-a716-446655440000"
                 }
             }
         },
