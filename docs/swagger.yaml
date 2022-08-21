@@ -1,4 +1,18 @@
 definitions:
+  adapter.AuthCredentials:
+    properties:
+      email:
+        example: john@doe.com
+        type: string
+      password:
+        example: "123456"
+        maxLength: 64
+        minLength: 6
+        type: string
+    required:
+    - email
+    - password
+    type: object
   adapter.RegisterStudent:
     properties:
       email:
@@ -12,6 +26,12 @@ definitions:
     required:
     - email
     - password
+    type: object
+  handler.HttpAccessToken:
+    properties:
+      access_token:
+        example: 123=
+        type: string
     type: object
   handler.HttpNewStudent:
     properties:
@@ -70,6 +90,44 @@ info:
   contact: {}
   termsOfService: github.com/jeanmolossi/vigilant-waddle/terms/
 paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login
+      parameters:
+      - description: Login credentials
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/adapter.AuthCredentials'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.HttpAccessToken'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/http_error.HTTPError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/http_error.HTTPError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/http_error.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/http_error.HTTPError'
+      summary: Login
+      tags:
+      - auth
   /me:
     get:
       description: Get current student
