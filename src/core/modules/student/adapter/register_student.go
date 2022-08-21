@@ -3,8 +3,8 @@ package adapter
 import "errors"
 
 type RegisterStudent struct {
-	Email    string `json:"email" validate:"required,email" example:"john@doe.com"`
-	Password string `json:"password" validate:"required,min=6,max=64" example:"123456"`
+	Email    string `json:"email" conform:"trim,email" validate:"required,email" example:"john@doe.com"`
+	Password string `json:"password" conform:"trim" validate:"required,min=6,max=64" example:"123456"`
 }
 
 func (r *RegisterStudent) GetErrorMap() map[string]map[string]error {

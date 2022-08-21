@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/leebenson/conform"
 )
 
 // NewCustomValidation is a factory method to create a CustomValidator.
@@ -18,6 +19,10 @@ func NewCustomValidator() *CustomValidator {
 // Validate is a method to validate a struct with custom validator.
 // Param `i` should be an struct tagged with validate tag.
 func (cv *CustomValidator) Validate(i interface{}) error {
+	// conform.Strings will remove the empty strings from the slice.
+	// will parse determined strings as the valid and accepted format.
+	conform.Strings(i)
+
 	err := cv.validate.Struct(i)
 
 	// Default bad request validation error
