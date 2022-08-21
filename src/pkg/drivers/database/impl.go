@@ -88,6 +88,10 @@ func (db *database) connect() (*gorm.DB, error) {
 	// level is Info by default.
 	level := logger.Info
 
+	if os.Getenv("ENVIRONMENT") == "testing" {
+		level = logger.Silent
+	}
+
 	// when production environment we log only errors.
 	if os.Getenv("ENVIRONMENT") == "production" {
 		level = logger.Error
