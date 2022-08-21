@@ -32,6 +32,17 @@ services:
         networks:
             - vigilant_waddle_api-net
 
+    vigilant_waddle_pgadmin:
+        container_name: vigilant_waddle_pgadmin
+        image: dpage/pgadmin4
+        environment:
+            - PGADMIN_DEFAULT_EMAIL=john@doe.com
+            - PGADMIN_DEFAULT_PASSWORD=123456789
+        ports:
+            - "1234:80"
+        networks:
+            - vigilant_waddle_api-net
+
     vigilant_waddle_api_docs:
         container_name: vigilant_waddle_api_docs
         build: .
