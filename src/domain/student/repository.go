@@ -18,6 +18,13 @@ type GetStudentsRepository interface {
 	Run(ctx context.Context, f filters.FilterConditions, p paginator.Paginator) ([]Student, error)
 }
 
+// RegisterStudentRepository is the repository implementation for Register Student.
 type RegisterStudentRepository interface {
-	Run(ctx context.Context, s Student) error
+	// Run executes the Register Student query.
+	//
+	// Example:
+	//
+	//      newStudent, err := repo.Run(context.Backround(), student)
+	//
+	Run(ctx context.Context, s Student) (Student, error)
 }
