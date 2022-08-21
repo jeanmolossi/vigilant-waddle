@@ -4,7 +4,8 @@ import (
 	"net/http"
 
 	"github.com/jeanmolossi/vigilant-waddle/src/cmd/httputil"
-	"github.com/jeanmolossi/vigilant-waddle/src/core/modules/student/handler"
+	ah "github.com/jeanmolossi/vigilant-waddle/src/core/modules/auth/handler"
+	sh "github.com/jeanmolossi/vigilant-waddle/src/core/modules/student/handler"
 	"github.com/jeanmolossi/vigilant-waddle/src/pkg/validator"
 
 	"github.com/labstack/echo/v4"
@@ -26,9 +27,12 @@ func RunServer() {
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 	e.GET("/ping", Ping)
 
-	e.GET("/students", handler.GetStudents())
-	e.POST("/student", handler.RegisterStudent())
-	e.GET("/me", handler.GetMe())
+	// auth
+	e.POST("/auth/login", ah.Login())
+
+	e.GET("/students", sh.GetStudents())
+	e.POST("/student", sh.RegisterStudent())
+	e.GET("/me", sh.GetMe())
 
 	// Start server
 	e.Logger.Fatal(e.Start(":8080"))
