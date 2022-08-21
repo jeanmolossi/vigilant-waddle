@@ -33,8 +33,6 @@ func (StudentModel) TableName() string {
 //
 // https://gorm.io/docs/hooks.html#Creating-an-object
 func (s *StudentModel) BeforeCreate(*gorm.DB) error {
-	// TODO uncomment this when you want to generate uuid.
-	// s.ID = uuid.NewString()
 	s.CreatedAt = time.Now()
 	s.UpdatedAt = time.Now()
 

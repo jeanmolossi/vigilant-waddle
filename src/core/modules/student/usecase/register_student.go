@@ -12,18 +12,18 @@ func RegisterStudent(
 	ctx context.Context,
 	repo student.RegisterStudentRepository,
 ) student.RegisterStudent {
-	return func(s student.Student) error {
+	return func(s student.Student) (student.Student, error) {
 		err := s.HashPassword()
 		if err != nil {
-			return err
+			return nil, err
 		}
 
-		err = repo.Run(ctx, s)
+		st, err := repo.Run(ctx, s)
 		if err != nil {
-			return catchDuplicateErr(err)
+			return nil, catchDuplicateErr(err)
 		}
 
-		return nil
+		return st, nil
 	}
 }
 

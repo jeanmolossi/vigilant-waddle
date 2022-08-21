@@ -15,12 +15,22 @@ func NewRegisterStudent(db database.Database) student.RegisterStudentRepository 
 	return &registerStudent{db}
 }
 
-func (r *registerStudent) Run(ctx context.Context, s student.Student) error {
-	student := &StudentModel{
+func (r *registerStudent) Run(ctx context.Context, s student.Student) (student.Student, error) {
+	_student := &StudentModel{
 		ID:       s.GetID(),
 		Email:    s.GetEmail(),
 		Password: s.GetPassword(),
 	}
 
-	return r.db.DB().Create(student).Error
+	result := r.db.DB().Create(_student)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	newStudent := student.NewStudent(
+		student.WithID(_student.ID),
+		student.WithEmail(_student.Email),
+	)
+
+	return newStudent, nil
 }

@@ -45,13 +45,13 @@ func RegisterStudent() echo.HandlerFunc {
 			student.WithPassword(studentInput.Password),
 		)
 
-		err := usecase(s)
+		student, err := usecase(s)
 
 		if err != nil {
 			return http_error.Handle(c, err)
 		}
 
-		return c.JSON(http.StatusCreated, NewHttpNewStudent(s))
+		return c.JSON(http.StatusCreated, NewHttpNewStudent(student))
 	}
 }
 

@@ -47,6 +47,7 @@ func (g *getStudents) Run(ctx context.Context, f filters.FilterConditions, p pag
 		students[i] = student.NewStudent(
 			student.WithID(s.ID),
 			student.WithEmail(s.Email),
+			student.WithPassword(s.Password),
 		)
 	}
 
