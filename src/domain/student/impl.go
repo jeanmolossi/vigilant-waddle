@@ -19,9 +19,14 @@ type student struct {
 // If has no options, the instance will be empty.
 func NewStudent(usrOptions ...baseuser.Option) Student {
 	s := &student{}
+
 	if len(usrOptions) > 0 {
-		s.SyncData(usrOptions...)
+		err := s.SyncData(usrOptions...)
+		if err != nil {
+			panic(err.Error())
+		}
 	}
+
 	return s
 }
 
@@ -33,6 +38,9 @@ func (s *student) GetEmail() string { return s.email }
 
 // GetPassword will return the current user password
 func (s *student) GetPassword() string { return s.password }
+
+// GetACL will return ACL for the current user
+func (s *student) GetACL() baseuser.ACL { return baseuser.StudentACL() }
 
 // SyncData receives an array of options and applies them to the current user
 func (s *student) SyncData(usrOptions ...baseuser.Option) error {
