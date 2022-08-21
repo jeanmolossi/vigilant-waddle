@@ -73,7 +73,14 @@ func (s *session) IsExpired() bool {
 		return true
 	}
 
-	if s.GetAccessToken().IsExpired() || s.GetRefreshToken().IsExpired() {
+	accessToken := s.GetAccessToken()
+	refreshToken := s.GetRefreshToken()
+
+	if accessToken.IsExpired() || refreshToken.IsExpired() {
+		return true
+	}
+
+	if s.expiration.IsZero() {
 		return true
 	}
 

@@ -2,6 +2,8 @@ package auth
 
 import (
 	"context"
+
+	"github.com/jeanmolossi/vigilant-waddle/src/pkg/filters"
 )
 
 // CreateSessionRepository is a interface who defines the CreateSession method
@@ -29,4 +31,19 @@ type DeleteSessionRepository interface {
 	//
 	// The sessionID received will be used to delete the session.
 	Run(ctx context.Context, sessionID string) error
+}
+
+// GetSingleSessionRepository is a interface who defines the GetSingleSession method
+type GetSingleSessionRepository interface {
+	// Run the GetSingleSession method
+	// The sessionID received will be used to get the session.
+	Run(ctx context.Context, f filters.FilterConditions) (Session, error)
+}
+
+// SessionUpdater is a interface who defines the UpdateSession method
+type SessionUpdater func(Session) (Session, error)
+
+type UpdateSessionRepository interface {
+	// Run the UpdateSession method
+	Run(ctx context.Context, sessionID string, u SessionUpdater) error
 }

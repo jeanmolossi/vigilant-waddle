@@ -30,6 +30,9 @@ func Handle(c echo.Context, err error) error {
 		errors.Is(err, student.ErrMissingStudentID):
 		return c.JSON(http.StatusUnauthorized, ToJsonErr(err))
 
+	case errors.Is(err, auth.ErrForbidden):
+		return c.JSON(http.StatusForbidden, ToJsonErr(err))
+
 	default:
 		return c.JSON(http.StatusInternalServerError, ToJsonErr(err))
 	}

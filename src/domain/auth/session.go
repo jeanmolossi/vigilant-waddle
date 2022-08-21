@@ -22,6 +22,17 @@ type Session interface {
 	// GetStudentID returns the student ID.
 	GetStudentID() string
 	// IsExpired returns true if the session is expired.
+	//
+	// If the session has no one of:
+	//		access token
+	//		refresh token
+	//	or
+	//		expiration
+	// it will return true to IsExpired call.
+	//
+	// Other case is:
+	//
+	// Access token or refresh token is expired.
 	IsExpired() bool
 	// GetAccessToken returns the access token.
 	GetAccessToken() SessionToken
@@ -53,3 +64,6 @@ type StartSession func(username, password string) (Session, error)
 
 // EndSession is the function that will be used to end a session.
 type EndSession func(sessionID string) error
+
+// ValidateAndRefresh is the function that will be used to validate and refresh a session.
+type ValidateAndRefresh func(studentID, sessionID string) error

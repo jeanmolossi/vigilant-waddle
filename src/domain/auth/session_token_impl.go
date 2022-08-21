@@ -18,13 +18,18 @@ var (
 	SECRET            = []byte(os.Getenv("SESSION_SECRET"))
 	AccessExpiration  = time.Minute * 10   // 10 minutes
 	RefreshExpiration = time.Hour * 24 * 7 // 1 week
+
+	AccessIssuer  = "session_provider"
+	RefreshIssuer = "refresh_provider"
 )
 
 // SessionFromToken will build a SessionToken from a token string.
 func SessionFromToken(token string) SessionToken {
 	decodedToken, err := decodeSessionToken(token)
 	if err != nil {
-		return nil
+		// Return a non nil sessionToken to avoid panic.
+		// The session is expired or invalid.
+		return NewSessionToken("")
 	}
 
 	return decodedToken
@@ -39,7 +44,7 @@ func SessionFromToken(token string) SessionToken {
 // Use ExpiresIn() to set the expiration for the token. (default is 10 minutes)
 func NewSessionToken(studentID string, opts ...TokenOption) SessionToken {
 	s := &sessionToken{
-		issuer:     "session_provider",
+		issuer:     AccessIssuer,
 		expiration: time.Now().UTC().Local().Add(AccessExpiration),
 	}
 
@@ -78,7 +83,7 @@ func (s *sessionToken) Expiration() time.Time {
 
 // IsExpired returns true if the token is expired.
 func (s *sessionToken) IsExpired() bool {
-	return s.expiration.After(time.Now().UTC().Local())
+	return s.expiration.Before(time.Now().UTC().Local())
 }
 
 // decodeSessionToken will receive token string and decode it.

@@ -72,5 +72,5 @@ func Login() echo.HandlerFunc {
 
 // HttpAccessToken is a access token representation for http response
 type HttpAccessToken struct {
-	AccessToken string `json:"access_token" example:"123="`
+	AccessToken string `json:"access_token" example:"OGE4MTlhMTctYTMxZS00OTE0LWE4ZjAtMzQ1Njg5ZThiMzg1OjJmZjhiOGIzLTU0OWItNGRjMi04Mjc4LWVhMDdlNjQxMGY1ZA=="`
 }
