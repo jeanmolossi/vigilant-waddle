@@ -3,7 +3,8 @@ package database
 import (
 	"os"
 
-	"github.com/jeanmolossi/vigilant-waddle/src/core/modules/student/repository"
+	ssr "github.com/jeanmolossi/vigilant-waddle/src/core/modules/auth/repository"
+	sr "github.com/jeanmolossi/vigilant-waddle/src/core/modules/student/repository"
 	d "github.com/jeanmolossi/vigilant-waddle/src/pkg/drivers/database"
 )
 
@@ -14,7 +15,7 @@ func GetConnection() d.Database {
 		d.User(os.Getenv("DB_USER")),
 		d.Password(os.Getenv("DB_PASSWORD")),
 		d.DatabaseName(os.Getenv("DB_NAME")),
-		d.DbEntities(&repository.StudentModel{}),
+		d.DbEntities(&sr.StudentModel{}, &ssr.SessionModel{}),
 	)
 
 	if err := db.OpenConnection(); err != nil {
