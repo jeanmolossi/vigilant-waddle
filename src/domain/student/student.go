@@ -15,7 +15,7 @@ type Student interface {
 type GetStudents func() ([]Student, error)
 
 // RegisterStudent is the usecase to register a new student
-type RegisterStudent func(Student) error
+type RegisterStudent func(Student) (Student, error)
 
 // GetMe is the usecase to get the current student
 // It will use the session token
