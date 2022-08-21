@@ -22,6 +22,7 @@ func RunServer() {
 	// Middlewares
 	e.Use(Cors())
 	e.Use(middleware.RequestID())
+	e.Use(ah.Middleware())
 
 	// Routes
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
@@ -29,6 +30,7 @@ func RunServer() {
 
 	// auth
 	e.POST("/auth/login", ah.Login())
+	e.POST("/auth/logout", ah.Logout())
 
 	e.GET("/students", sh.GetStudents())
 	e.POST("/student", sh.RegisterStudent())
