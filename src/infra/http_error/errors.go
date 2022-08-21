@@ -4,6 +4,7 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/jeanmolossi/vigilant-waddle/src/domain/auth"
 	"github.com/jeanmolossi/vigilant-waddle/src/domain/student"
 	"github.com/jeanmolossi/vigilant-waddle/src/pkg/validator"
 	"github.com/labstack/echo/v4"
@@ -16,10 +17,19 @@ func Handle(c echo.Context, err error) error {
 	switch {
 	case errors.Is(err, student.ErrEmailAlreadyExists):
 		return c.JSON(http.StatusConflict, ToJsonErr(err))
-	case errors.As(err, &validationErr):
+
+	case errors.As(err, &validationErr),
+		errors.As(err, &bindErr):
 		return c.JSON(http.StatusBadRequest, err)
-	case errors.As(err, &bindErr):
-		return c.JSON(http.StatusBadRequest, err)
+
+	case errors.Is(err, auth.ErrHasNotSession),
+		errors.Is(err, auth.ErrHasNotStudentID):
+		return c.JSON(http.StatusBadRequest, ToJsonErr(err))
+
+	case errors.Is(err, student.ErrInvalidCredentials),
+		errors.Is(err, student.ErrMissingStudentID):
+		return c.JSON(http.StatusUnauthorized, ToJsonErr(err))
+
 	default:
 		return c.JSON(http.StatusInternalServerError, ToJsonErr(err))
 	}
