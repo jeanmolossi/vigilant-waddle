@@ -14,6 +14,8 @@ type BaseUser interface {
 	GetEmail() string
 	// GetPassword will return the current user password
 	GetPassword() string
+	// GetACL will return ACL for the current user
+	GetACL() ACL
 
 	// SyncData receives an array of options and applies them to the current user
 	SyncData(usrOption ...Option) error
@@ -26,4 +28,22 @@ type BaseUser interface {
 	//
 	// It should have a password, else it will return an error
 	HashPassword() error
+}
+
+// Resource is a custom type to represent the different resources
+// that can be used in the ACL
+type Resource string
+
+// ACLOptions is a function that will be used to configure the ACL
+type ACLOptions func(a *acl)
+
+// ACL will provide the access control list for the current user
+// and the resources that can be accessed by the current user
+type ACL interface {
+	// CanRead will check if the current user can read the resource
+	CanRead(resource Resource) bool
+	// CanWrite will check if the current user can write the resource
+	CanWrite(resource Resource) bool
+	// FullAccess will check if the current user can read and write the resource
+	FullAccess(resource Resource) bool
 }
