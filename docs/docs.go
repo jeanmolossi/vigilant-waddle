@@ -75,6 +75,61 @@ const docTemplate = `{
                 }
             }
         },
+        "/auth/logout": {
+            "post": {
+                "security": [
+                    {
+                        "access_token": []
+                    }
+                ],
+                "description": "Login",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Logout",
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/handler.HttpAcceptedLogout"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/me": {
             "get": {
                 "security": [
@@ -103,8 +158,8 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "201": {
-                        "description": "Created",
+                    "200": {
+                        "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/handler.HttpNewStudent"
                         }
@@ -294,12 +349,21 @@ const docTemplate = `{
                 }
             }
         },
+        "handler.HttpAcceptedLogout": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "logged out"
+                }
+            }
+        },
         "handler.HttpAccessToken": {
             "type": "object",
             "properties": {
                 "access_token": {
                     "type": "string",
-                    "example": "123="
+                    "example": "OGE4MTlhMTctYTMxZS00OTE0LWE4ZjAtMzQ1Njg5ZThiMzg1OjJmZjhiOGIzLTU0OWItNGRjMi04Mjc4LWVhMDdlNjQxMGY1ZA=="
                 }
             }
         },

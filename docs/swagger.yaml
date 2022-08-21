@@ -27,10 +27,16 @@ definitions:
     - email
     - password
     type: object
+  handler.HttpAcceptedLogout:
+    properties:
+      message:
+        example: logged out
+        type: string
+    type: object
   handler.HttpAccessToken:
     properties:
       access_token:
-        example: 123=
+        example: OGE4MTlhMTctYTMxZS00OTE0LWE4ZjAtMzQ1Njg5ZThiMzg1OjJmZjhiOGIzLTU0OWItNGRjMi04Mjc4LWVhMDdlNjQxMGY1ZA==
         type: string
     type: object
   handler.HttpNewStudent:
@@ -128,6 +134,41 @@ paths:
       summary: Login
       tags:
       - auth
+  /auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: Login
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/handler.HttpAcceptedLogout'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - access_token: []
+      summary: Logout
+      tags:
+      - auth
   /me:
     get:
       description: Get current student
@@ -142,8 +183,8 @@ paths:
       produces:
       - application/json
       responses:
-        "201":
-          description: Created
+        "200":
+          description: OK
           schema:
             $ref: '#/definitions/handler.HttpNewStudent'
         "400":
