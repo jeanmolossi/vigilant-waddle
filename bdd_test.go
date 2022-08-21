@@ -26,11 +26,11 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	// }
 
 	// if has no token should login
-	if api.Token == "" {
-		if err := api.DoLogin(); err != nil {
-			panic(err)
-		}
-	}
+	// if api.Token == "" {
+	// if err := api.DoLogin(); err != nil {
+	// panic(err)
+	// }
+	// }
 
 	ctx.Before(func(ctx context.Context, sc *godog.Scenario) (context.Context, error) {
 		api.ResetResponse(sc)
