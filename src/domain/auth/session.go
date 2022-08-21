@@ -50,3 +50,6 @@ type SessionToken interface {
 
 // StartSession is the function that will be used to start a session.
 type StartSession func(username, password string) (Session, error)
+
+// EndSession is the function that will be used to end a session.
+type EndSession func(sessionID string) error
