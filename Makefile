@@ -24,6 +24,7 @@ run:
 	$(SWAG) init
 	docker-compose up -d $(PREFIX)api_db
 	docker-compose up -d $(PREFIX)api_client
+	docker-compose up -d $(PREFIX)pgadmin
 	docker-compose up -d $(PREFIX)api_docs
 
 .PHONY: rebuild_db
