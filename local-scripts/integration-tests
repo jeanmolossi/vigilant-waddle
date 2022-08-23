@@ -3,6 +3,7 @@ HELPERS="vigilant_waddle_e2e_api_db vigilant_waddle_e2e_api_client"
 CLIENT_CONTAINER="vigilant_waddle_e2e_api_client"
 MAIN_CONTAINER="vigilant_waddle_e2e_api_test_runner"
 HOSTNAME=$(hostname)
+WANT_HOST=nave-jean
 
 if [ ! -e ".dockerignore" ]; then
 	echo ".docker/dbdata" >> .dockerignore
@@ -17,14 +18,14 @@ if [ ! -e ".docker/dockerize/dockerize" ]; then
 fi
 
 for CONTAINER in $HELPERS; do
-	if [[ "${HOSTNAME}" == "nave-jean" ]]; then
+	if [[ "${HOSTNAME}" == "${WANT_HOST}" ]]; then
 		docker-compose -f docker-compose.e2e.yml up -d $CONTAINER
 	else
 		docker-compose -f docker-compose.e2e.yml up -d --build --force-recreate $CONTAINER
 	fi
 done
 
-if [[ "${HOSTNAME}" == "nave-jean" ]]; then
+if [[ "${HOSTNAME}" == "${WANT_HOST}" ]]; then
 	docker-compose -f docker-compose.e2e.yml up "${MAIN_CONTAINER}"
 else
 	docker-compose -f docker-compose.e2e.yml up --build --force-recreate "${MAIN_CONTAINER}"
@@ -32,7 +33,7 @@ fi
 
 EXIT_CODE=$(docker inspect -f '{{.State.ExitCode}}' "${MAIN_CONTAINER}")
 
-if [[ "${HOSTNAME}" == "nave-jean" ]]; then
+if [[ "${HOSTNAME}" == "${WANT_HOST}" ]]; then
 	docker-compose -f docker-compose.e2e.yml logs "${CLIENT_CONTAINER}"
 fi
 
