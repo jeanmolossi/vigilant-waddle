@@ -59,3 +59,22 @@ Feature: login in app
 			]
 		}
 		"""
+
+	Scenario: Should receive an error if try logout without send auth token
+		When I "POST" to "/auth/logout"
+		Then the status code received should be 403
+		And the response received should match json:
+		"""
+		{"error":"forbidden"}
+		"""
+
+	Scenario: Should receive message if logout successfully
+		Given there are headers:
+			| Content-Type	| application/json |
+			| Authorization	| @transform:toAccessToken:@db:sessions:student_id:f61139d7-1fe6-451f-b892-c96be729ce1c |
+		When I "POST" to "/auth/logout"
+		Then the status code received should be 202
+		And the response received should match json:
+		"""
+		{"message":"logged out"}
+		"""
