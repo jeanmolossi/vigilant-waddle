@@ -6,8 +6,10 @@ import (
 	"strings"
 
 	"github.com/cucumber/godog"
-	student "github.com/jeanmolossi/vigilant-waddle/src/core/modules/student/repository"
 	"github.com/jeanmolossi/vigilant-waddle/src/pkg/drivers/database"
+
+	auth "github.com/jeanmolossi/vigilant-waddle/src/core/modules/auth/repository"
+	student "github.com/jeanmolossi/vigilant-waddle/src/core/modules/student/repository"
 )
 
 func (a *ApiFeature) ThereAreAny(tableName string, data *godog.Table) error {
@@ -24,9 +26,9 @@ func (a *ApiFeature) ThereAreAny(tableName string, data *godog.Table) error {
 		database.Hostname(os.Getenv("DB_HOST")),
 		database.Port(os.Getenv("DB_PORT")),
 		database.User(os.Getenv("DB_USER")),
-		database.Password(os.Getenv("DB_PASS")),
+		database.Password(os.Getenv("DB_PASSWORD")),
 		database.DatabaseName(os.Getenv("DB_NAME")),
-		database.DbEntities(&student.StudentModel{}),
+		database.DbEntities(&student.StudentModel{}, &auth.SessionModel{}),
 	)
 	err := dbConn.OpenConnection()
 	if err != nil {
@@ -55,7 +57,7 @@ func (a *ApiFeature) ThereAreAny(tableName string, data *godog.Table) error {
 
 func (a *ApiFeature) ClearDB(*godog.Scenario) error {
 	dbConn := database.NewDatabase(
-		database.Hostname("vigilant_waddle_e2e_api_db"),
+		database.Hostname("DB_HOST"),
 		database.Port(os.Getenv("DB_PORT")),
 		database.User(os.Getenv("DB_USER")),
 		database.Password(os.Getenv("DB_PASSWORD")),
@@ -67,6 +69,7 @@ func (a *ApiFeature) ClearDB(*godog.Scenario) error {
 	}
 
 	tables := []string{
+		"sessions",
 		"users",
 	}
 

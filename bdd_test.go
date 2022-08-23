@@ -20,25 +20,13 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 		Token:   "",
 	}
 
-	// err := api.DoRegister()
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	// if has no token should login
-	// if api.Token == "" {
-	// if err := api.DoLogin(); err != nil {
-	// panic(err)
-	// }
-	// }
-
 	ctx.Before(func(ctx context.Context, sc *godog.Scenario) (context.Context, error) {
 		api.ResetResponse(sc)
 		return ctx, nil
 	})
 
 	ctx.After(func(ctx context.Context, sc *godog.Scenario, err error) (context.Context, error) {
-		// api.ClearDB(sc)
+		api.ClearDB(sc)
 		return ctx, nil
 	})
 
@@ -46,5 +34,6 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^I "(POST|PUT)" to "([^"]*)" with:$`, api.IRequestToWithPayload)
 	ctx.Step(`^the status code received should be (\d+)$`, api.TheStatusCodeShouldBe)
 	ctx.Step(`^the response received should match json:$`, api.TheResponseMatchJSON)
+	ctx.Step(`^the response should contain:$`, api.TheResponseShouldContain)
 	ctx.Step(`^there are "([^"]*)" with:$`, api.ThereAreAny)
 }
