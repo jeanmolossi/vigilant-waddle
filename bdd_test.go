@@ -35,5 +35,6 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the status code received should be (\d+)$`, api.TheStatusCodeShouldBe)
 	ctx.Step(`^the response received should match json:$`, api.TheResponseMatchJSON)
 	ctx.Step(`^the response should contain:$`, api.TheResponseShouldContain)
+	ctx.Step(`^there are headers:$`, api.ThereAreHeaders)
 	ctx.Step(`^there are "([^"]*)" with:$`, api.ThereAreAny)
 }

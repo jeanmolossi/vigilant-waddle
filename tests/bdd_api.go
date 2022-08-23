@@ -13,11 +13,20 @@ type ApiFeature struct {
 	BaseURL  string
 	Response *httptest.ResponseRecorder
 	Token    string
+
+	Headers map[string]string
 }
 
 func (a *ApiFeature) MakeRequestAuth(req *http.Request) {
 	req.Header.Add("Content-Type", "application/json")
 	req.Header.Add("Authorization", a.Token)
+
+	if len(a.Headers) > 0 {
+		for k, v := range a.Headers {
+			req.Header.Set(k, v)
+		}
+
+	}
 }
 
 func (a *ApiFeature) ResetResponse(*godog.Scenario) {
