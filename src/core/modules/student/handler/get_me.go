@@ -19,7 +19,6 @@ import (
 // @Produce json
 // @Param fields query []string false "fields to return from the student"
 // @Success 200 {object} HttpNewStudent
-// @Failure 400 {object} http_error.HTTPBadRequestError "Bad request"
 // @Failure 403 {object} http_error.HTTPError "Forbidden"
 // @Failure 404 {object} http_error.HTTPError "User not found"
 // @Failure 500 {object} http_error.HTTPError "An error occurred"

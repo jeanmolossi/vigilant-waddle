@@ -59,8 +59,8 @@ func RegisterStudent() echo.HandlerFunc {
 
 // HttpStudent is a student representation for http response
 type HttpStudent struct {
-	ID    string `json:"id" example:"550e8400-e29b-41d4-a716-446655440000" format:"uuid"`
-	Email string `json:"email" example:"john@doe.com" format:"email"`
+	ID    string `json:"id,omitempty" example:"550e8400-e29b-41d4-a716-446655440000" format:"uuid"`
+	Email string `json:"email,omitempty" example:"john@doe.com" format:"email"`
 }
 
 // HttpNewStudent is a student representation for http response
