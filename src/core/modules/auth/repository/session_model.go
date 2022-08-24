@@ -7,6 +7,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// SessionModel represents how a session is stored in the database
 type SessionModel struct {
 	SessID       string    `gorm:"primary_key;column:session_id;type:uuid;default:uuid_generate_v4();index:idx_sess_id"`
 	StudentID    string    `gorm:"column:student_id;type:uuid;unique;index:idx_student_id;not null"`
@@ -15,10 +16,20 @@ type SessionModel struct {
 	RefreshToken string    `gorm:"column:refresh_token;type:text;not null"`
 }
 
+// TableName overrides the table name used by SessionModel to `sessions`
+//
+// Read more about GORM conventions:
+//
+// https://gorm.io/docs/conventions.html#TableName
 func (sm *SessionModel) TableName() string {
 	return "sessions"
 }
 
+// BeforeCreate is a hook to set the expiration field
+//
+// Read more about GORM hooks:
+//
+// https://gorm.io/docs/hooks.html#Creating-an-object
 func (sm *SessionModel) BeforeCreate(*gorm.DB) error {
 	if sm.Expiration.IsZero() {
 		sm.Expiration = time.Now().UTC().Local().Add(time.Minute * 10)
@@ -27,6 +38,7 @@ func (sm *SessionModel) BeforeCreate(*gorm.DB) error {
 	return nil
 }
 
+// AsDomain will return a SessionModel as auth.Session
 func (sm *SessionModel) AsDomain() auth.Session {
 	return auth.NewSession(
 		auth.WithSessionID(sm.SessID),

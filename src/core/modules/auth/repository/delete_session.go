@@ -12,10 +12,13 @@ type deleteSession struct {
 	db database.Database
 }
 
+// NewDeleteSession will return auth.DeleteSessionRepository
 func NewDeleteSession(db database.Database) auth.DeleteSessionRepository {
 	return &deleteSession{db}
 }
 
+// Run will delete received sessionID.
+// Useful to invalidate a session
 func (d *deleteSession) Run(ctx context.Context, sessionID string) error {
 	s := &SessionModel{SessID: sessionID}
 

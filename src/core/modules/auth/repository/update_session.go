@@ -11,12 +11,30 @@ type updateSession struct {
 	db database.Database
 }
 
+// NewUpdateSession returns an auth.UpdateSessionRepository implementation
 func NewUpdateSession(db database.Database) auth.UpdateSessionRepository {
 	return &updateSession{
 		db: db,
 	}
 }
 
+// Run will update given sessionID by the update call
+//
+// Example:
+//
+// 	// current session will be updated
+// 	updater := func(cs auth.Session) (auth.Session, error) {
+// 		updatedSession := auth.NewSession(
+// 			auth.WithSessionID(cs.GetID()),
+// 			auth.WithSessionID(cs.GetStudentID()),
+// 		)
+// 	}
+//
+// 	repo := updateSessionRepository.Run(
+// 		context.Background(),
+// 		sessionID,
+// 		updater,
+// 	)
 func (u *updateSession) Run(ctx context.Context, sessionID string, update auth.SessionUpdater) error {
 	currentSession := &SessionModel{SessID: sessionID}
 

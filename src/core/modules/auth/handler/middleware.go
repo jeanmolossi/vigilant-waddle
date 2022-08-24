@@ -16,12 +16,15 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// Middleware is a implementation from echo middleware to check
+// if the current user session is valid
 func Middleware() echo.MiddlewareFunc {
 	db := database.GetConnection()
 	usecase := factory.NewValidateAndRefresh(db)
 
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
+			// bypass path who don't need authentication
 			if shouldIgnorePath(c.Path()) {
 				return next(c)
 			}
@@ -29,6 +32,8 @@ func Middleware() echo.MiddlewareFunc {
 			var tokenStr string
 			token, err := c.Cookie("access_token")
 			if err != nil {
+				// if the token is not present in cookie try
+				// get from Authorization header
 				authToken := c.Request().Header.Get("Authorization")
 				if authToken == "" {
 					return http_error.Handle(c, auth.ErrForbidden)
@@ -65,6 +70,10 @@ func Middleware() echo.MiddlewareFunc {
 	}
 }
 
+// shouldIgnorePath receive the current path and check if it will
+// bypass by middleware.
+//
+// If match with anyone path return true.
 func shouldIgnorePath(path string) bool {
 	middlewareShouldIgnorePaths := []string{
 		`^/ping$`,
@@ -87,6 +96,14 @@ func shouldIgnorePath(path string) bool {
 	return false
 }
 
+// Decode receives the token hash and decode that as correctly
+// params in order:
+//
+// 	studentID, sessionID, decodeError
+//
+// Example:
+//
+// 	studentID, sessionID, err := Decode(hash)
 func Decode(hash string) (string, string, error) {
 	decoded, err := base64.StdEncoding.DecodeString(hash)
 	if err != nil {
