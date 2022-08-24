@@ -10,10 +10,6 @@ import (
 // If the string is empty, it will return an error.
 func WithID(id string) baseuser.Option {
 	return func(u baseuser.BaseUser) error {
-		if id == "" {
-			return ErrEmptyPropertyValue
-		}
-
 		if usr, ok := u.(*student); ok {
 			usr.id = id
 			return nil
@@ -29,10 +25,6 @@ func WithID(id string) baseuser.Option {
 // If the string is empty, it will return an error.
 func WithEmail(email string) baseuser.Option {
 	return func(u baseuser.BaseUser) error {
-		if email == "" {
-			return ErrEmptyPropertyValue
-		}
-
 		if usr, ok := u.(*student); ok {
 			usr.email = email
 			return nil
