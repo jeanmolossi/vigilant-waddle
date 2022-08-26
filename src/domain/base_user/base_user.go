@@ -34,6 +34,11 @@ type BaseUser interface {
 // that can be used in the ACL
 type Resource string
 
+// String will only parse resource to a string
+func (r Resource) String() string {
+	return string(r)
+}
+
 // ACLOptions is a function that will be used to configure the ACL
 type ACLOptions func(a *acl)
 
@@ -46,4 +51,7 @@ type ACL interface {
 	CanWrite(resource Resource) bool
 	// FullAccess will check if the current user can read and write the resource
 	FullAccess(resource Resource) bool
+	// GetResources will return two slices from resources.
+	// Readable resources and Writable resources in order.
+	GetResources() ([]Resource, []Resource)
 }

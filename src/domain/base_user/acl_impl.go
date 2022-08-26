@@ -47,3 +47,20 @@ func (a *acl) CanWrite(resource Resource) bool {
 func (a *acl) FullAccess(resource Resource) bool {
 	return a.CanRead(resource) && a.CanWrite(resource)
 }
+
+// GetResources will return two slices from resources.
+// Readable resources and Writable resources in order.
+func (a *acl) GetResources() ([]Resource, []Resource) {
+	readableResources := []Resource{}
+	writableResources := []Resource{}
+
+	for resource := range a.canRead {
+		readableResources = append(readableResources, resource)
+	}
+
+	for resource := range a.canWrite {
+		writableResources = append(writableResources, resource)
+	}
+
+	return readableResources, writableResources
+}

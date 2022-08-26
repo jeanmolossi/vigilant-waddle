@@ -164,12 +164,6 @@ const docTemplate = `{
                             "$ref": "#/definitions/handler.HttpNewStudent"
                         }
                     },
-                    "400": {
-                        "description": "Bad request",
-                        "schema": {
-                            "$ref": "#/definitions/http_error.HTTPBadRequestError"
-                        }
-                    },
                     "403": {
                         "description": "Forbidden",
                         "schema": {
