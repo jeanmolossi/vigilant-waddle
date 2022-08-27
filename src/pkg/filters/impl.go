@@ -2,19 +2,18 @@ package filters
 
 import (
 	"fmt"
-	"strings"
 )
 
 type filters struct {
 	fields       []string
-	conditionMap map[string]interface{}
+	conditionMap ConditionMap
 }
 
 // NewConditions will return FilterCondition instance.
 func NewConditions() FilterConditions {
 	return &filters{
 		fields:       make([]string, 0),
-		conditionMap: make(map[string]interface{}),
+		conditionMap: NewConditionMap(),
 	}
 }
 
@@ -40,7 +39,7 @@ func (f *filters) WithFields(prefix string) ([]string, bool) {
 //  - Conditions
 //  - GetCondition
 func (f *filters) HasConditions() bool {
-	return len(f.conditionMap) > 0
+	return f.conditionMap.Len() > 0
 }
 
 // Conditions will build the string statement and a values slice to be used in the query.
@@ -60,32 +59,7 @@ func (f *filters) Conditions() (string, []interface{}) {
 		panic("No conditions to be used in the query")
 	}
 
-	statement := []string{}
-	values := []interface{}{}
-
-	// f.conditions looks like:
-	// map[
-	// 	"course_published": true,
-	// 	"course_name":      "Effective Eureka",
-	// ]
-	//
-	// So key is course_name as example and value is "Effective Eureka"
-	for key, value := range f.conditionMap {
-		if key != "" {
-			// statement looks like:
-			// []string{"course_published = ?", "course_name = ?"}
-			statement = append(statement, key+" = ?")
-			// values looks like:
-			// []interface{}{true, "Effective Eureka"}
-			values = append(values, value)
-		}
-	}
-
-	// finalStatement looks like:
-	// "course_published = ? AND course_name = ?"
-	finalStatement := strings.Join(statement, " AND ")
-
-	return finalStatement, values
+	return f.conditionMap.Statement(), f.conditionMap.Values()
 }
 
 // GetCondition will return the value and if exists a condition.
@@ -105,18 +79,29 @@ func (f *filters) GetCondition(key string) (interface{}, bool) {
 		panic("No conditions to be used in the query")
 	}
 
-	value, ok := f.conditionMap[key]
+	value, ok := f.conditionMap.GetCondition(key)
 	return value, ok
 }
 
 // WithCondition will add a condition to be used in the query.
 func (f *filters) WithCondition(field string, value interface{}) {
-	f.conditionMap[field] = value
+	f.conditionMap.AppendCondition(field, EQ, AND, value)
+}
+
+// WithComplexCondition will add a complex condition to conditionMap
+//
+// It can set the ASSERTION type [EQ, NEQ, GT, GTE, etc] and set PREPOSITION
+// in Where clause [AND, OR]
+//
+// Like:
+// 	WithComplexCondition("id", EQ, "1", AND)
+func (f *filters) WithComplexCondition(field string, assertion Assertion, value interface{}, preposition Preposition) {
+	f.conditionMap.AppendCondition(field, assertion, preposition, value)
 }
 
 // RemoveCondition will remove a condition to be used in the query.
 func (f *filters) RemoveCondition(field string) {
-	delete(f.conditionMap, field)
+	f.conditionMap.DelCondition(field)
 }
 
 // AddField will add a field to be used in the query.

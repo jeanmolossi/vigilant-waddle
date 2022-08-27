@@ -49,10 +49,62 @@ type FilterConditions interface {
 	GetCondition(key string) (interface{}, bool)
 	// WithCondition will add a condition to be used in the query.
 	WithCondition(field string, value interface{})
+	// WithComplexCondition will add a complex condition to conditionMap
+	//
+	// It can set the ASSERTION type [EQ, NEQ, GT, GTE, etc] and set PREPOSITION
+	// in Where clause [AND, OR]
+	//
+	// Like:
+	// 	WithComplexCondition("id", EQ, "1", AND)
+	WithComplexCondition(field string, assertion Assertion, value interface{}, preposition Preposition)
 	// RemoveCondition will remove a condition to be used in the query.
 	RemoveCondition(field string)
 	// AddField will add a field to be used in the query.
 	AddField(field string)
 	// AddFields will add a slice of fields to be used in the query.
 	AddFields(fields []string)
+}
+
+// Preposition is the aggregation preposition to
+// Where clouse.
+//
+// Useful to change assertion conditions between AND or OR
+type Preposition string
+
+const (
+	AND Preposition = "AND"
+	OR  Preposition = "OR"
+)
+
+// Assertion is the value assertion to where clause.
+//
+// Useful to change the assertion condition.
+// Like:
+// 	EQ	// =
+// 	NEQ	// !=
+// 	GT	// >
+// 	GTE	// >=
+// 	// ...
+type Assertion string
+
+const (
+	EQ      Assertion = "="
+	NEQ     Assertion = "!="
+	GT      Assertion = ">"
+	GTE     Assertion = ">="
+	LT      Assertion = "<"
+	LTE     Assertion = "<="
+	IN      Assertion = "IN"
+	NULL    Assertion = "IS NULL"
+	NOTNULL Assertion = "IS NOT NULL"
+)
+
+func assertionIncludes(as []Assertion, a Assertion) bool {
+	for _, current := range as {
+		if current == a {
+			return true
+		}
+	}
+
+	return false
 }
