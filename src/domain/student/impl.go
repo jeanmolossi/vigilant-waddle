@@ -11,6 +11,7 @@ type student struct {
 	id       string
 	email    string
 	password string
+	scope    baseuser.Scope
 }
 
 // NewStudent returns a new student instance.
@@ -38,6 +39,9 @@ func (s *student) GetEmail() string { return s.email }
 
 // GetPassword will return the current user password
 func (s *student) GetPassword() string { return s.password }
+
+// GetScope will return student scope
+func (s *student) GetScope() baseuser.Scope { return s.scope }
 
 // GetACL will return ACL for the current user
 func (s *student) GetACL() baseuser.ACL { return baseuser.StudentACL() }

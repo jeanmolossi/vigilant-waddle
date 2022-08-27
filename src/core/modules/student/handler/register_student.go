@@ -61,6 +61,7 @@ func RegisterStudent() echo.HandlerFunc {
 type HttpStudent struct {
 	ID    string `json:"id,omitempty" example:"550e8400-e29b-41d4-a716-446655440000" format:"uuid"`
 	Email string `json:"email,omitempty" example:"john@doe.com" format:"email"`
+	Scope string `json:"scopes,omitempty" example:"student"`
 }
 
 // HttpNewStudent is a student representation for http response
@@ -71,6 +72,10 @@ type HttpNewStudent struct {
 // NewHttpNewStudent creates a new HttpNewStudent
 func NewHttpNewStudent(s student.Student) *HttpNewStudent {
 	return &HttpNewStudent{
-		Data: HttpStudent{s.GetID(), s.GetEmail()},
+		Data: HttpStudent{
+			s.GetID(),
+			s.GetEmail(),
+			string(s.GetScope()),
+		},
 	}
 }

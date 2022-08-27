@@ -13,10 +13,12 @@ type getStudents struct {
 	db database.Database
 }
 
+// NewGetStudents will return a student.GetStudentsRepository implementation
 func NewGetStudents(db database.Database) student.GetStudentsRepository {
 	return &getStudents{db}
 }
 
+// Run will get filters condition and paginator and returns the students
 func (g *getStudents) Run(ctx context.Context, f filters.FilterConditions, p paginator.Paginator) ([]student.Student, error) {
 	var dbStudents []StudentModel
 
@@ -48,6 +50,7 @@ func (g *getStudents) Run(ctx context.Context, f filters.FilterConditions, p pag
 			student.WithID(s.ID),
 			student.WithEmail(s.Email),
 			student.WithPassword(s.Password),
+			student.WithScope(s.Type),
 		)
 	}
 

@@ -45,3 +45,15 @@ func WithPassword(password string) baseuser.Option {
 		return baseuser.ErrInvalidBaseUsrImplementation
 	}
 }
+
+// WithScope will add scope to usr
+func WithScope(scope string) baseuser.Option {
+	return func(u baseuser.BaseUser) error {
+		if usr, ok := u.(*student); ok {
+			usr.scope = baseuser.Scope(scope)
+			return nil
+		}
+
+		return baseuser.ErrInvalidBaseUsrImplementation
+	}
+}
