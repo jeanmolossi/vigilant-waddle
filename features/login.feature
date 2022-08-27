@@ -3,8 +3,8 @@ Feature: login in app
 
 	Scenario: Should receive an access token when do login
 		Given there are "users" with:
-			| usr_id								| usr_email		| usr_password													|
-			| f61139d7-1fe6-451f-b892-c96be729ce1c	| john1@doe.com	| $2a$10$sPrAnxt9E5TUzfeUl7WYge4C6gpSpnyyxJWeRg82j.eFCTthT6uKC	|
+			| usr_id								| usr_email		| usr_scope	| usr_password													|
+			| f61139d7-1fe6-451f-b892-c96be729ce1c	| john1@doe.com	| student 	| $2a$10$sPrAnxt9E5TUzfeUl7WYge4C6gpSpnyyxJWeRg82j.eFCTthT6uKC	|
 		When I "POST" to "/auth/login" with:
 		"""
 		{
@@ -69,9 +69,10 @@ Feature: login in app
 		"""
 
 	Scenario: Should receive message if logout successfully
-		Given there are headers:
-			| Content-Type	| application/json |
-			| Authorization	| @transform:toAccessToken:@db:sessions:student_id:f61139d7-1fe6-451f-b892-c96be729ce1c |
+		Given there are "users" with:
+			| usr_id								| usr_email		| usr_scope	| usr_password													|
+			| f61139d7-1fe6-451f-b892-c96be729ce1c	| john1@doe.com	| student 	| $2a$10$sPrAnxt9E5TUzfeUl7WYge4C6gpSpnyyxJWeRg82j.eFCTthT6uKC	|
+		Given there is user "f61139d7-1fe6-451f-b892-c96be729ce1c" logged:
 		When I "POST" to "/auth/logout"
 		Then the status code received should be 202
 		And the response received should match json:

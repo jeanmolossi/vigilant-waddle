@@ -57,7 +57,7 @@ func (a *ApiFeature) ThereAreAny(tableName string, data *godog.Table) error {
 
 func (a *ApiFeature) ClearDB(*godog.Scenario) error {
 	dbConn := database.NewDatabase(
-		database.Hostname("DB_HOST"),
+		database.Hostname(os.Getenv("DB_HOST")),
 		database.Port(os.Getenv("DB_PORT")),
 		database.User(os.Getenv("DB_USER")),
 		database.Password(os.Getenv("DB_PASSWORD")),
