@@ -142,7 +142,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "student"
+                    "auth"
                 ],
                 "summary": "Get current student",
                 "operationId": "get-me",
