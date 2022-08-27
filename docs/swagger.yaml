@@ -13,6 +13,20 @@ definitions:
     - email
     - password
     type: object
+  adapter.RegisterProducer:
+    properties:
+      email:
+        example: john@doe.com
+        type: string
+      password:
+        example: "123456"
+        maxLength: 64
+        minLength: 6
+        type: string
+    required:
+    - email
+    - password
+    type: object
   adapter.RegisterStudent:
     properties:
       email:
@@ -39,10 +53,29 @@ definitions:
         example: OGE4MTlhMTctYTMxZS00OTE0LWE4ZjAtMzQ1Njg5ZThiMzg1OjJmZjhiOGIzLTU0OWItNGRjMi04Mjc4LWVhMDdlNjQxMGY1ZA==
         type: string
     type: object
+  handler.HttpNewProducer:
+    properties:
+      data:
+        $ref: '#/definitions/handler.HttpProducer'
+    type: object
   handler.HttpNewStudent:
     properties:
       data:
         $ref: '#/definitions/handler.HttpStudent'
+    type: object
+  handler.HttpProducer:
+    properties:
+      email:
+        example: john@doe.com
+        format: email
+        type: string
+      id:
+        example: 550e8400-e29b-41d4-a716-446655440000
+        format: uuid
+        type: string
+      scopes:
+        example: producer
+        type: string
     type: object
   handler.HttpStudent:
     properties:
@@ -53,6 +86,9 @@ definitions:
       id:
         example: 550e8400-e29b-41d4-a716-446655440000
         format: uuid
+        type: string
+      scopes:
+        example: student
         type: string
     type: object
   http_error.HTTPBadRequestError:
@@ -231,6 +267,39 @@ paths:
       summary: Ping the server.
       tags:
       - healthcheck
+  /producer:
+    post:
+      description: Register a producer
+      operationId: register-producer
+      parameters:
+      - description: Producer
+        in: body
+        name: producer
+        required: true
+        schema:
+          $ref: '#/definitions/adapter.RegisterProducer'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/handler.HttpNewProducer'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/http_error.HTTPBadRequestError'
+        "409":
+          description: User with that email already exists
+          schema:
+            $ref: '#/definitions/http_error.HTTPError'
+        "500":
+          description: An error occurred
+          schema:
+            $ref: '#/definitions/http_error.HTTPError'
+      summary: Register a producer
+      tags:
+      - producer
   /student:
     post:
       description: Register a student
