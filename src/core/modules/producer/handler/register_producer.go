@@ -43,6 +43,7 @@ func RegisterProducer() echo.HandlerFunc {
 		s := producer.NewProducer(
 			producer.WithEmail(producerInput.Email),
 			producer.WithPassword(producerInput.Password),
+			producer.WithScope("producer"),
 		)
 
 		producer, err := usecase(s)
