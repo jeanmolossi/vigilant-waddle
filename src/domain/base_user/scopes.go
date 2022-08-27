@@ -18,10 +18,18 @@ func (s Scope) String() string {
 
 // Check if the user implementation is Student
 func IsStudent(b BaseUser) bool {
+	if b == nil {
+		return false
+	}
+
 	return b.GetScope() == STUDENT || b.GetScope() == BOTH
 }
 
 // Check if the user implementation is producer
 func IsProducer(b BaseUser) bool {
+	if b == nil {
+		return false
+	}
+
 	return b.GetScope() == PRODUCER || b.GetScope() == BOTH
 }

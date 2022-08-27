@@ -2,6 +2,7 @@
 package auth
 
 import (
+	"errors"
 	"time"
 
 	baseuser "github.com/jeanmolossi/vigilant-waddle/src/domain/base_user"
@@ -71,3 +72,22 @@ type EndSession func(sessionID string) error
 
 // ValidateAndRefresh is the function that will be used to validate and refresh a session.
 type ValidateAndRefresh func(usrID, sessionID string) (baseuser.BaseUser, error)
+
+// GetMe is the usecase to get the current student
+// It will use the session token
+type GetMe func(GetMeOptions) (baseuser.BaseUser, error)
+
+// GetMeOptions is the options for the GetMe usecase
+type GetMeOptions struct {
+	UserID string   `json:"user_id" example:"1" format:"uuid" validate:"required,uuid"`
+	Fields []string `query:"fields" example:"name,email"`
+}
+
+// GetErrorMap implements ModuleErrorMap to GetMeOptions
+func (g *GetMeOptions) GetErrorMap() map[string]map[string]error {
+	return map[string]map[string]error{
+		"userid": {
+			"required": errors.New(""),
+			"uuid":     errors.New("")},
+	}
+}

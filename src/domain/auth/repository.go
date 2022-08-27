@@ -52,5 +52,5 @@ type UpdateSessionRepository interface {
 // GetLoggerUsr will search and retrieve current logged usr
 type GetLoggedUsr interface {
 	// Run will receive usrID and return the user or an error
-	Run(ctx context.Context, usrID string) (baseuser.BaseUser, error)
+	Run(ctx context.Context, f filters.FilterConditions) (baseuser.BaseUser, error)
 }

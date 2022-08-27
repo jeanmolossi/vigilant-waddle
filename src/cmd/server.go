@@ -32,6 +32,7 @@ func RunServer() {
 	// auth
 	e.POST("/auth/login", ah.Login())
 	e.POST("/auth/logout", ah.Logout())
+	e.GET("/me", ah.GetMe())
 
 	// students
 	e.GET("/students", sh.GetStudents())
@@ -39,8 +40,6 @@ func RunServer() {
 
 	// producer
 	e.POST("/producer", ph.RegisterProducer())
-
-	e.GET("/me", sh.GetMe())
 
 	// Start server
 	e.Logger.Fatal(e.Start(":8080"))

@@ -59,15 +59,18 @@ func ValidateAndRefresh(
 			return nil, err
 		}
 
+		f := filters.NewConditions()
+		f.WithCondition("usr_id", usrID)
+
 		// is current session is valid continue
 		if !session.IsExpired() {
-			return nil, nil
+			return getLoggedRepo.Run(ctx, f)
 		}
 
 		if err := refreshRepo.Run(ctx, sessionID, refreshSession(session)); err != nil {
 			return nil, err
 		}
 
-		return getLoggedRepo.Run(ctx, usrID)
+		return getLoggedRepo.Run(ctx, f)
 	}
 }
