@@ -7,21 +7,6 @@ package baseuser
 // It will be used to configure the BaseUser instance
 type Option func(u BaseUser) error
 
-// Scope is a config option to users.
-//
-// It determines if user is a student, producer or both
-type Scope string
-
-const (
-	STUDENT  Scope = "student"
-	PRODUCER Scope = "producer"
-	BOTH     Scope = "both"
-)
-
-func (s Scope) String() string {
-	return string(s)
-}
-
 type BaseUser interface {
 	// GetID will return the current user id
 	GetID() string
