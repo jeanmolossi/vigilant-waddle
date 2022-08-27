@@ -79,7 +79,7 @@ func shouldIgnorePath(path string) bool {
 		`^/ping$`,
 		`/swagger/(.*)$`,
 		`/auth/(login)$`,
-		`/student$`,
+		`/(student|producer)$`,
 	}
 
 	for _, p := range middlewareShouldIgnorePaths {
