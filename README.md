@@ -119,5 +119,17 @@ Você pode executar os testes com os seguintes comandos:
 # :barber: Como contribuir
 [Voltar ao topo](#vigilant-waddle)
 
+Para contribuir com este projeto crie uma branch com seu nome e sua contribuição. Exemplos:
+
+- `johndoe/fix/acl-bug`
+- `johndoe/feature/two-factor-login`
+
+Certifique-se, também, de adicionar testes para sua contribuição e garanta que nenhuma outra implementação seja prejudicada por sua contribuição.
+
+Abra um Pull request com sua modificação.
+
 # :bug: Issues
 [Voltar ao topo](#vigilant-waddle)
+
+Encontrou algum bug ou problema de qualquer natureza. Sinta-se a vontade para comentar e abrir uma issue.
+Entretanto, coloque o label apropriado na sua issue
