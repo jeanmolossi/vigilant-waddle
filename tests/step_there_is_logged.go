@@ -43,7 +43,7 @@ func (a *ApiFeature) ThereIsUserLogged(usrID string) error {
 
 	// create new session with the student id, access token and refresh token
 	s := authDmn.NewSession(
-		authDmn.WithStudentID(usrID),
+		authDmn.WithUserID(usrID),
 		authDmn.WithAccessToken(accessToken.Token()),
 		authDmn.WithRefreshToken(refreshToken.Token()),
 		authDmn.WithExpiration(accessToken.Expiration()),
