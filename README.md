@@ -65,6 +65,13 @@ Após conseguir rodar a aplicação com sucesso, você terá alguns recursos:
 
 ---
 
+### Instalação Fácil de Go lang
+
+Para facilitar basta fazer download do [gist](https://gist.github.com/jeanmolossi/8f2a643540aee671becf828d983952fd) e executar.
+Confira a versão e OS antes de executar.
+
+---
+
 ### Instalação do Swag
 
 Certifique-se de ter instalado o [Go lang](https://go.dev/doc/install) antes de prosseguir. Após isso, você pode rodar:
