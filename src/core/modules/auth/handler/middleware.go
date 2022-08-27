@@ -3,7 +3,6 @@ package handler
 import (
 	"encoding/base64"
 	"fmt"
-	"log"
 	"net/http"
 	"regexp"
 	"strings"
@@ -11,6 +10,7 @@ import (
 
 	"github.com/jeanmolossi/vigilant-waddle/src/core/modules/auth/factory"
 	"github.com/jeanmolossi/vigilant-waddle/src/domain/auth"
+	baseuser "github.com/jeanmolossi/vigilant-waddle/src/domain/base_user"
 	"github.com/jeanmolossi/vigilant-waddle/src/infra/database"
 	"github.com/jeanmolossi/vigilant-waddle/src/infra/http_error"
 	"github.com/labstack/echo/v4"
@@ -44,12 +44,12 @@ func Middleware() echo.MiddlewareFunc {
 				tokenStr = token.Value
 			}
 
-			studentID, sessionID, err := Decode(tokenStr)
+			usrID, sessionID, err := Decode(tokenStr)
 			if err != nil {
 				return http_error.Handle(c, auth.ErrForbidden)
 			}
 
-			err = usecase(studentID, sessionID)
+			usr, err := usecase(usrID, sessionID)
 			if err != nil {
 				c.SetCookie(&http.Cookie{
 					Name:    "access_token",
@@ -60,10 +60,24 @@ func Middleware() echo.MiddlewareFunc {
 				return http_error.Handle(c, auth.ErrForbidden)
 			}
 
-			c.Set("studentID", studentID)
-			c.Set("sessionID", sessionID)
+			studentID := ""
+			producerID := ""
 
-			log.Println("valid session...")
+			// usr can be a producer AND be a student too
+			// here checks if is student
+			if baseuser.IsStudent(usr) {
+				studentID = usr.GetID()
+			}
+
+			// usr can be a producer AND be a student too
+			// here checks if is producer
+			if baseuser.IsProducer(usr) {
+				producerID = usr.GetID()
+			}
+
+			c.Set("studentID", studentID)   // will be defined if logged usr is student
+			c.Set("producerID", producerID) // will be defined if logged usr is producer
+			c.Set("sessionID", sessionID)
 
 			return next(c)
 		}
@@ -99,11 +113,11 @@ func shouldIgnorePath(path string) bool {
 // Decode receives the token hash and decode that as correctly
 // params in order:
 //
-// 	studentID, sessionID, decodeError
+// 	usrID, sessionID, decodeError
 //
 // Example:
 //
-// 	studentID, sessionID, err := Decode(hash)
+// 	usrID, sessionID, err := Decode(hash)
 func Decode(hash string) (string, string, error) {
 	decoded, err := base64.StdEncoding.DecodeString(hash)
 	if err != nil {

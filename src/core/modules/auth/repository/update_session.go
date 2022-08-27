@@ -50,7 +50,7 @@ func (u *updateSession) Run(ctx context.Context, sessionID string, update auth.S
 
 	updatedSession := &SessionModel{
 		SessID:       session.GetID(),
-		StudentID:    session.GetStudentID(),
+		UserID:       session.GetUserID(),
 		AccessToken:  session.GetAccessToken().Token(),
 		RefreshToken: session.GetRefreshToken().Token(),
 		Expiration:   session.GetAccessToken().Expiration(),

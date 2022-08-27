@@ -9,7 +9,7 @@ import (
 // session implements the Session interface.
 type session struct {
 	sessionID    string
-	studentID    string
+	userID       string
 	expiration   time.Time
 	accessToken  string
 	refreshToken string
@@ -21,7 +21,7 @@ type session struct {
 //
 //		s := auth.NewSession(
 //			auth.WithSessionID(sessionID),
-//			auth.WithStudentID(studentID),
+//			auth.WithUserID(userID),
 //			auth.WithExpiration(expiration),
 //			auth.WithAccessToken(accessToken),
 //			auth.WithRefreshToken(refreshToken),
@@ -33,7 +33,7 @@ func NewSession(opts ...SessionProp) Session {
 	// if no options are provided our session is empty
 	s := &session{
 		sessionID: "",
-		studentID: "",
+		userID:    "",
 		// expiration as 10 seconds before now.
 		// this is to make sure that the session is expired before it is created as default.
 		expiration: time.Now().Add(time.Second * -10),
@@ -53,8 +53,8 @@ func NewSession(opts ...SessionProp) Session {
 // GetID returns the session ID.
 func (s *session) GetID() string { return s.sessionID }
 
-// GetStudentID returns the student ID.
-func (s *session) GetStudentID() string { return s.studentID }
+// GetUserID returns the student ID.
+func (s *session) GetUserID() string { return s.userID }
 
 // IsExpired returns true if the session is expired.
 //
@@ -102,6 +102,6 @@ func (s *session) GetRefreshToken() SessionToken {
 // The hash is used to return the token to the client.
 func (s *session) HashToken() string {
 	return base64.StdEncoding.EncodeToString(
-		[]byte(fmt.Sprintf("%s:%s", s.studentID, s.sessionID)),
+		[]byte(fmt.Sprintf("%s:%s", s.userID, s.sessionID)),
 	)
 }

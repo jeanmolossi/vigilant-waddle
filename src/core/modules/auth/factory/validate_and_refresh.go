@@ -14,5 +14,6 @@ func NewValidateAndRefresh(db database.Database) auth.ValidateAndRefresh {
 		context.Background(),
 		repository.NewGetSingleSession(db),
 		repository.NewUpdateSession(db),
+		repository.NewGetLoggedUser(db),
 	)
 }

@@ -23,15 +23,15 @@ func NewCreateSession(db database.Database) auth.CreateSessionRepository {
 //
 // Else, if session not exists create one.
 func (c *createSession) Run(ctx context.Context, session auth.Session) (auth.Session, error) {
-	if session.GetStudentID() == "" {
+	if session.GetUserID() == "" {
 		return nil, auth.ErrHasNotStudentID
 	}
 
 	actualSession := &SessionModel{
-		StudentID: session.GetStudentID(),
+		UserID: session.GetUserID(),
 	}
 
-	result := c.db.DB().Where("student_id = ?", session.GetStudentID()).First(actualSession)
+	result := c.db.DB().Where("usr_id = ?", session.GetUserID()).First(actualSession)
 
 	if result.Error != nil {
 		if result.Error != gorm.ErrRecordNotFound {

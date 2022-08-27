@@ -15,10 +15,10 @@ func WithSessionID(id string) SessionProp {
 	}
 }
 
-// WithStudentID sets the student ID for the session
-func WithStudentID(id string) SessionProp {
+// WithUserID sets the user ID for the session
+func WithUserID(id string) SessionProp {
 	return func(s *session) error {
-		s.studentID = id
+		s.userID = id
 		return nil
 	}
 }

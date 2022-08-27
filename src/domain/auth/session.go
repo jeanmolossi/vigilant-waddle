@@ -1,7 +1,11 @@
 // Package auth will contains all the logic related to the authentication of the user.
 package auth
 
-import "time"
+import (
+	"time"
+
+	baseuser "github.com/jeanmolossi/vigilant-waddle/src/domain/base_user"
+)
 
 // SessionProp is a function that will be applied to the session.
 //
@@ -19,8 +23,8 @@ type TokenOption func(*sessionToken) error
 type Session interface {
 	// GetID returns the session ID.
 	GetID() string
-	// GetStudentID returns the student ID.
-	GetStudentID() string
+	// GetUserID returns the user ID.
+	GetUserID() string
 	// IsExpired returns true if the session is expired.
 	//
 	// If the session has no one of:
@@ -66,4 +70,4 @@ type StartSession func(username, password string) (Session, error)
 type EndSession func(sessionID string) error
 
 // ValidateAndRefresh is the function that will be used to validate and refresh a session.
-type ValidateAndRefresh func(studentID, sessionID string) error
+type ValidateAndRefresh func(usrID, sessionID string) (baseuser.BaseUser, error)

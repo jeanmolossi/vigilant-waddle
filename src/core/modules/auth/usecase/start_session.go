@@ -51,7 +51,7 @@ func StartSession(
 
 		// create new session with the student id, access token and refresh token
 		s := auth.NewSession(
-			auth.WithStudentID(student.GetID()),
+			auth.WithUserID(student.GetID()),
 			auth.WithAccessToken(accessToken.Token()),
 			auth.WithRefreshToken(refreshToken.Token()),
 			auth.WithExpiration(accessToken.Expiration()),

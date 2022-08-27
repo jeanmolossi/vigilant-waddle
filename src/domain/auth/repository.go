@@ -3,6 +3,7 @@ package auth
 import (
 	"context"
 
+	baseuser "github.com/jeanmolossi/vigilant-waddle/src/domain/base_user"
 	"github.com/jeanmolossi/vigilant-waddle/src/pkg/filters"
 )
 
@@ -46,4 +47,10 @@ type SessionUpdater func(Session) (Session, error)
 type UpdateSessionRepository interface {
 	// Run the UpdateSession method
 	Run(ctx context.Context, sessionID string, u SessionUpdater) error
+}
+
+// GetLoggerUsr will search and retrieve current logged usr
+type GetLoggedUsr interface {
+	// Run will receive usrID and return the user or an error
+	Run(ctx context.Context, usrID string) (baseuser.BaseUser, error)
 }

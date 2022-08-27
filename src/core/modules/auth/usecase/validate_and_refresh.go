@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/jeanmolossi/vigilant-waddle/src/domain/auth"
+	baseuser "github.com/jeanmolossi/vigilant-waddle/src/domain/base_user"
 	"github.com/jeanmolossi/vigilant-waddle/src/pkg/filters"
 )
 
@@ -11,10 +12,11 @@ func ValidateAndRefresh(
 	ctx context.Context,
 	getSessionRepo auth.GetSingleSessionRepository,
 	refreshRepo auth.UpdateSessionRepository,
+	getLoggedRepo auth.GetLoggedUsr,
 ) auth.ValidateAndRefresh {
-	getSession := func(studentID, sessionID string) (auth.Session, error) {
+	getSession := func(usrID, sessionID string) (auth.Session, error) {
 		f := filters.NewConditions()
-		f.WithCondition("student_id", studentID)
+		f.WithCondition("usr_id", usrID)
 		f.WithCondition("session_id", sessionID)
 
 		return getSessionRepo.Run(ctx, f)
@@ -27,13 +29,13 @@ func ValidateAndRefresh(
 
 			accessToken := s.GetAccessToken()
 			if isAcessExpired {
-				accessToken = auth.NewSessionToken(s.GetStudentID())
+				accessToken = auth.NewSessionToken(s.GetUserID())
 			}
 
 			refreshToken := s.GetRefreshToken()
 			if isRefreshExpired {
 				refreshToken = auth.NewSessionToken(
-					s.GetStudentID(),
+					s.GetUserID(),
 					auth.ExpiresIn(auth.RefreshExpiration),
 					auth.WithIssuer(auth.RefreshIssuer),
 				)
@@ -41,7 +43,7 @@ func ValidateAndRefresh(
 
 			s = auth.NewSession(
 				auth.WithSessionID(s.GetID()),
-				auth.WithStudentID(s.GetStudentID()),
+				auth.WithUserID(s.GetUserID()),
 				auth.WithAccessToken(accessToken.Token()),
 				auth.WithRefreshToken(refreshToken.Token()),
 				auth.WithExpiration(accessToken.Expiration()),
@@ -51,17 +53,21 @@ func ValidateAndRefresh(
 		}
 	}
 
-	return func(studentID, sessionID string) error {
-		session, err := getSession(studentID, sessionID)
+	return func(usrID, sessionID string) (baseuser.BaseUser, error) {
+		session, err := getSession(usrID, sessionID)
 		if err != nil {
-			return err
+			return nil, err
 		}
 
 		// is current session is valid continue
 		if !session.IsExpired() {
-			return nil
+			return nil, nil
 		}
 
-		return refreshRepo.Run(ctx, sessionID, refreshSession(session))
+		if err := refreshRepo.Run(ctx, sessionID, refreshSession(session)); err != nil {
+			return nil, err
+		}
+
+		return getLoggedRepo.Run(ctx, usrID)
 	}
 }
