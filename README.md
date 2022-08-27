@@ -19,6 +19,7 @@ Nesta API será possível registrar cada usuário e autenticar.
 - [Issues](#bug-issues)
 
 # :footprints: Primeiros passos
+[Voltar ao topo](#vigilant-waddle)
 
 Certifique-se de ter instalado os seguintes recursos:
 - [Go lang](https://go.dev/doc/install)
@@ -27,6 +28,7 @@ Certifique-se de ter instalado os seguintes recursos:
 - [Swag](#instalação-do-swag)
 
 # :runner: Como rodar
+[Voltar ao topo](#vigilant-waddle)
 
 Após ter instalado os [recursos necessários](#footprints-primeiros-passos), você pode executar o seguinte comando:
 
@@ -52,12 +54,14 @@ Estes acima, são os comandos que você pode rodar.
 **Para rodar a aplicação:** `make run`
 
 # :book: Documentação adicional
+[Voltar ao topo](#vigilant-waddle)
 
 Após conseguir rodar a aplicação com sucesso, você terá alguns recursos:
 - [Swagger](http://localhost:8081/swagger/index.html)
 - [Godoc](http://localhost:6061/pkg/github.com/jeanmolossi/vigilant-waddle/)
 
 # :question: Dicas
+[Voltar ao topo](#vigilant-waddle)
 
 ---
 
@@ -104,6 +108,7 @@ Caso esteja com problemas ao fazer sua aplicação inicializar e se conectar com
 ---
 
 # :apple: Testes
+[Voltar ao topo](#vigilant-waddle)
 
 Esta aplicação possui testes unitários e testes de Integração.
 
@@ -112,5 +117,7 @@ Você pode executar os testes com os seguintes comandos:
 - Integração: `make e2e-test`
 
 # :barber: Como contribuir
+[Voltar ao topo](#vigilant-waddle)
 
 # :bug: Issues
+[Voltar ao topo](#vigilant-waddle)
