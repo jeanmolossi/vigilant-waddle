@@ -18,6 +18,10 @@ const (
 	BOTH     Scope = "both"
 )
 
+func (s Scope) String() string {
+	return string(s)
+}
+
 type BaseUser interface {
 	// GetID will return the current user id
 	GetID() string

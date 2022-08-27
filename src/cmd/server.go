@@ -5,6 +5,7 @@ import (
 
 	"github.com/jeanmolossi/vigilant-waddle/src/cmd/httputil"
 	ah "github.com/jeanmolossi/vigilant-waddle/src/core/modules/auth/handler"
+	ph "github.com/jeanmolossi/vigilant-waddle/src/core/modules/producer/handler"
 	sh "github.com/jeanmolossi/vigilant-waddle/src/core/modules/student/handler"
 	"github.com/jeanmolossi/vigilant-waddle/src/pkg/validator"
 
@@ -32,8 +33,13 @@ func RunServer() {
 	e.POST("/auth/login", ah.Login())
 	e.POST("/auth/logout", ah.Logout())
 
+	// students
 	e.GET("/students", sh.GetStudents())
 	e.POST("/student", sh.RegisterStudent())
+
+	// producer
+	e.POST("/producer", ph.RegisterProducer())
+
 	e.GET("/me", sh.GetMe())
 
 	// Start server

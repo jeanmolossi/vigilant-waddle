@@ -30,6 +30,7 @@ func (r *registerStudent) Run(ctx context.Context, s student.Student) (student.S
 	newStudent := student.NewStudent(
 		student.WithID(_student.ID),
 		student.WithEmail(_student.Email),
+		student.WithScope(_student.Type),
 	)
 
 	return newStudent, nil

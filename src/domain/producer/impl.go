@@ -14,11 +14,11 @@ type producer struct {
 	scope    baseuser.Scope
 }
 
-// NewStudent returns a new producer instance.
+// NewProducer returns a new producer instance.
 //
 // It receive an array of options and applies them to the producer instance.
 // If has no options, the instance will be empty.
-func NewStudent(usrOptions ...baseuser.Option) Producer {
+func NewProducer(usrOptions ...baseuser.Option) Producer {
 	s := &producer{}
 
 	if len(usrOptions) > 0 {
