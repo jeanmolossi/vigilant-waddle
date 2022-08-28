@@ -16,6 +16,7 @@ Nesta API será possível registrar cada usuário e autenticar.
 - [Documentação adicional](#book-documentação-adicional)
 - [Dicas](#question-dicas)
 - [Testes](#apple-testes)
+- [Features](#1stplacemedal-features)
 - [Como contribuir](#barber-como-contribuir)
 - [Issues](#bug-issues)
 
@@ -99,7 +100,11 @@ Caso esteja com problemas ao fazer sua aplicação inicializar e se conectar com
 	```shell
 	curl 'http://localhost:8081/ping'
 	```
-	Se receber `{"message": "pong"}` a aplicação está rodando
+	Se receber `{"message": "pong"}` a aplicação está rodando.
+
+	Caso o comando anterior não responda. Provavelmente, seu container não conseguiu se conectar à base de dados ainda.
+
+	Não se desespere. Continue seguinto os passos.
 3. Execute com sua senha sudo:
 	```shell
 	make rebuild_db
@@ -111,6 +116,12 @@ Caso esteja com problemas ao fazer sua aplicação inicializar e se conectar com
 	```
 	Se este comando retornar algo, seu banco está funcionando.
 5. Agora dê um _CTRL + S_ em algum arquivo `.go` para que a aplicação reinicie.
+6. Tente novamente executar o comando de ping:
+	```shell
+	curl 'http://localhost:8081/ping'
+	```
+	Se receber `{"message": "pong"}` a aplicação está rodando.
+
 
 **Pronto!**
 
@@ -124,6 +135,41 @@ Esta aplicação possui testes unitários e testes de Integração.
 Você pode executar os testes com os seguintes comandos:
 - Unit: `make test`
 - Integração: `make e2e-test`
+
+---
+
+# :1st_place_medal: Features
+[Voltar ao topo](#vigilant-waddle)
+
+Confira a lista de features da aplicação:
+
+**Produtor**
+
+- [x] Cadastro
+- [ ] Recuperação de conta - TODO
+- [ ] Reset de senha - TODO
+- [ ] Gerenciamento de sessão - TODO
+	- [ ] Ver locais de acesso - TODO
+	- [ ] Eliminar sessão de lugar remoto - TODO
+- [x] Me (recuperar meus dados)
+- [x] Login
+- [x] Logout
+- [ ] Escopos de permissão - TODO
+	Escopos de permissão funciona como uma ACL. Que checa se o usuário pode ou não acessar determinados recursos dentro da aplicação
+
+**Aluno**
+
+- [x] Cadastro
+- [ ] Recuperação de conta - TODO
+- [ ] Reset de senha - TODO
+- [ ] Gerenciamento de sessão - TODO
+	- [ ] Ver locais de acesso - TODO
+	- [ ] Eliminar sessão de lugar remoto - TODO
+- [x] Me (recuperar meus dados)
+- [x] Login
+- [x] Logout
+- [ ] Escopos de permissão - TODO
+	Escopos de permissão funciona como uma ACL. Que checa se o usuário pode ou não acessar determinados recursos dentro da aplicação
 
 # :barber: Como contribuir
 [Voltar ao topo](#vigilant-waddle)
