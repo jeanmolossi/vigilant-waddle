@@ -28,3 +28,12 @@ type RegisterStudentRepository interface {
 	//
 	Run(ctx context.Context, s Student) (Student, error)
 }
+
+// StudentUpdater is a interface who defines the UpdateStudentRepository method
+type StudentUpdater func(Student) (Student, error)
+
+// UpdateStudentRepository is repository implementation for Update Student.
+type UpdateStudentRepository interface {
+	// Run executes the update in student
+	Run(ctx context.Context, usrID string, u StudentUpdater) (Student, error)
+}

@@ -3,6 +3,7 @@ package repository
 import (
 	"time"
 
+	"github.com/jeanmolossi/vigilant-waddle/src/domain/student"
 	"gorm.io/gorm"
 )
 
@@ -48,4 +49,13 @@ func (s *StudentModel) BeforeCreate(*gorm.DB) error {
 func (s *StudentModel) BeforeUpdate(tx *gorm.DB) error {
 	s.UpdatedAt = time.Now()
 	return nil
+}
+
+func (s *StudentModel) AsDomain() student.Student {
+	return student.NewStudent(
+		student.WithID(s.ID),
+		student.WithEmail(s.Email),
+		student.WithPassword(s.Password),
+		student.WithScope(s.Type),
+	)
 }
