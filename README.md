@@ -16,7 +16,7 @@ Nesta API será possível registrar cada usuário e autenticar.
 - [Documentação adicional](#book-documentação-adicional)
 - [Dicas](#question-dicas)
 - [Testes](#apple-testes)
-- [Features](#1st-place-medal-features)
+- [Features](#1st_place_medal-features)
 - [Como contribuir](#barber-como-contribuir)
 - [Issues](#bug-issues)
 
