@@ -59,6 +59,7 @@ Estes acima, são os comandos que você pode rodar.
 Após conseguir rodar a aplicação com sucesso, você terá alguns recursos:
 - [Swagger](http://localhost:8081/swagger/index.html)
 - [Godoc](http://localhost:6061/pkg/github.com/jeanmolossi/vigilant-waddle/)
+- [PgAdmin](http://localhost:1234/)
 
 # :question: Dicas
 [Voltar ao topo](#vigilant-waddle)
