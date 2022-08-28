@@ -74,7 +74,7 @@ Feature: register producer
 			"password": "123456"
 		}
 		"""
-		Then the status code received should be 200
+		Then the status code received should be 201
 
 	Scenario: Can not register producer with existing email
 		Given there are "users" with:
