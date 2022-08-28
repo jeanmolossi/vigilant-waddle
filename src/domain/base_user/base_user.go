@@ -30,6 +30,26 @@ type BaseUser interface {
 	//
 	// It should have a password, else it will return an error
 	HashPassword() error
+
+	// AddScope will add current scope to current user.
+	//
+	// Looks possible cases:
+	//
+	// 		student.AddScope(PRODUCER)	// student.GetScope()	=> BOTH
+	// 		producer.AddScope(STUDENT)	// producer.GetScope()	=> BOTH
+	// 		student.AddScope(STUDENT) 	// student.GetScope()	=> STUDENT
+	// 		producer.AddScope(PRODUCER)	// producer.GetScope()	=> PRODUCER
+	// 		student.AddScope(BOTH) 		// student.GetScope()	=> BOTH
+	// 		producer.AddScope(BOTH)		// producer.GetScope()	=> BOTH
+	//
+	// If user scope is `student` and call `AddScope(PRODUCER)`, it
+	// will make user scope as `BOTH`.
+	//
+	// If user scope is `producer` and call `AddScope(STUDENT)`, it
+	// will make user scope as `BOTH` too.
+	//
+	// If current scope matches with call `AddScope`. Nothing happens
+	AddScope(Scope)
 }
 
 // Resource is a custom type to represent the different resources

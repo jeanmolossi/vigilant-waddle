@@ -32,28 +32,28 @@ func NewProducer(usrOptions ...baseuser.Option) Producer {
 }
 
 // GetID will return the current user id
-func (s *producer) GetID() string { return s.id }
+func (p *producer) GetID() string { return p.id }
 
 // GetEmail will return the current user email
-func (s *producer) GetEmail() string { return s.email }
+func (p *producer) GetEmail() string { return p.email }
 
 // GetPassword will return the current user password
-func (s *producer) GetPassword() string { return s.password }
+func (p *producer) GetPassword() string { return p.password }
 
 // GetScope will return producer scope
-func (s *producer) GetScope() baseuser.Scope { return s.scope }
+func (p *producer) GetScope() baseuser.Scope { return p.scope }
 
 // GetACL will return ACL for the current user
-func (s *producer) GetACL() baseuser.ACL { return baseuser.ProducerACL() }
+func (p *producer) GetACL() baseuser.ACL { return baseuser.ProducerACL() }
 
 // SyncData receives an array of options and applies them to the current user
-func (s *producer) SyncData(usrOptions ...baseuser.Option) error {
+func (p *producer) SyncData(usrOptions ...baseuser.Option) error {
 	if len(usrOptions) == 0 {
 		return ErrNoDataToSync
 	}
 
 	for _, opt := range usrOptions {
-		if err := opt(s); err != nil {
+		if err := opt(p); err != nil {
 			return err
 		}
 	}
@@ -63,19 +63,43 @@ func (s *producer) SyncData(usrOptions ...baseuser.Option) error {
 
 // IsPasswordValid will check if the user password received
 // is valid password for the current user
-func (s *producer) IsPasswordValid(password string) bool {
-	return bcrypt.CompareHashAndPassword([]byte(s.password), []byte(password)) == nil
+func (p *producer) IsPasswordValid(password string) bool {
+	return bcrypt.CompareHashAndPassword([]byte(p.password), []byte(password)) == nil
 }
 
 // HashPassword will hash the password received and return the hash
 //
 // It should have a password, else it will return an error
-func (s *producer) HashPassword() error {
-	hash, err := bcrypt.GenerateFromPassword([]byte(s.password), bcrypt.DefaultCost)
+func (p *producer) HashPassword() error {
+	hash, err := bcrypt.GenerateFromPassword([]byte(p.password), bcrypt.DefaultCost)
 	if err != nil {
 		return err
 	}
 
-	s.password = string(hash)
+	p.password = string(hash)
 	return nil
+}
+
+// AddScope will add current scope to current user.
+//
+// Looks possible cases:
+//
+// 		student.AddScope(PRODUCER)	// student.GetScope()	=> BOTH
+// 		producer.AddScope(STUDENT)	// producer.GetScope()	=> BOTH
+// 		student.AddScope(STUDENT) 	// student.GetScope()	=> STUDENT
+// 		producer.AddScope(PRODUCER)	// producer.GetScope()	=> PRODUCER
+// 		student.AddScope(BOTH) 		// student.GetScope()	=> BOTH
+// 		producer.AddScope(BOTH)		// producer.GetScope()	=> BOTH
+//
+// If user scope is `student` and call `AddScope(PRODUCER)`, it
+// will make user scope as `BOTH`.
+//
+// If user scope is `producer` and call `AddScope(STUDENT)`, it
+// will make user scope as `BOTH` too.
+//
+// If current scope matches with call `AddScope`. Nothing happens
+func (p *producer) AddScope(scope baseuser.Scope) {
+	if p.scope == baseuser.STUDENT {
+		p.scope = baseuser.BOTH
+	}
 }
