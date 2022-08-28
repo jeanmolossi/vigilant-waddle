@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/jeanmolossi/vigilant-waddle/src/core/modules/producer/adapter"
@@ -50,6 +51,13 @@ func RegisterProducer() echo.HandlerFunc {
 
 		if err != nil {
 			return http_error.Handle(c, err)
+		}
+
+		if producer == nil {
+			return c.JSON(
+				http.StatusNotFound,
+				http_error.ToJsonErr(errors.New("fail on create producer")),
+			)
 		}
 
 		return c.JSON(http.StatusCreated, NewHttpNewStudent(producer))

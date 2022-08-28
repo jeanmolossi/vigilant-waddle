@@ -3,6 +3,7 @@ package repository
 import (
 	"time"
 
+	"github.com/jeanmolossi/vigilant-waddle/src/domain/producer"
 	"gorm.io/gorm"
 )
 
@@ -49,4 +50,13 @@ func (s *ProducerModel) BeforeCreate(*gorm.DB) error {
 func (s *ProducerModel) BeforeUpdate(tx *gorm.DB) error {
 	s.UpdatedAt = time.Now()
 	return nil
+}
+
+func (s *ProducerModel) AsDomain() producer.Producer {
+	return producer.NewProducer(
+		producer.WithID(s.ID),
+		producer.WithEmail(s.Email),
+		producer.WithPassword(s.Password),
+		producer.WithScope(s.Type),
+	)
 }
