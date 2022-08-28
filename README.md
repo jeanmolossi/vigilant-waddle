@@ -2,8 +2,9 @@
 
 Este projeto é uma API de autenticação e de gerenciamento de usuários.
 São dois (2) tipos de usuários:
-	- Produtor
-	- Aluno
+
+- Produtor
+- Aluno
 
 Nesta API será possível registrar cada usuário e autenticar.
 
