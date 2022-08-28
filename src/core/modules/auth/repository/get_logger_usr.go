@@ -24,7 +24,7 @@ func (g *getLoggedUsr) Run(ctx context.Context, f filters.FilterConditions) (bas
 	result := g.db.DB().Table("users")
 
 	if !f.HasConditions() {
-		return nil, errors.New("you should provide user id")
+		return nil, errors.New("you should provide user filter")
 	}
 
 	if fields, ok := f.WithFields("users"); ok {
